@@ -1,0 +1,2492 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="artifact-type" content="narrative">
+  <meta name="design-style" content="riso">
+  <title>速率的應用｜國小六年級數學互動學習</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,700;0,900;1,700&family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@1.43.0/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+
+      /* Page and surfaces (Riso) */
+      --background: #f7f3ea;
+      --surface-container-low: #ffffff;
+      --surface-container: #efe8d8;
+      --surface-container-high: #fff8b3;
+
+      /* Ink */
+      --on-surface: #1d2a5a;
+      --on-surface-variant: #3d4775;
+
+      /* Rules */
+      --outline: #1d2a5a;
+      --outline-variant: #c3c6d9;
+
+      /* Accents */
+      --primary: #006aa8;
+      --on-primary: #ffffff;
+      --primary-container: #ffe800;
+      --on-primary-container: #1d2a5a;
+      --secondary: #ff52b4;
+      --tertiary: #d00074;
+      --error: #c0262d;
+      --on-error: #ffffff;
+
+      /* Data series */
+      --data-1: #0078bf;
+      --data-2: #d00074;
+      --data-3: #1d2a5a;
+      --data-4: #d9531e;
+      --data-context: #b4b8cc;
+
+      /* Fonts (CJK-first pairing with Riso faces) */
+      --font-headline: 'Noto Sans TC', 'Archivo', sans-serif;
+      --font-body: 'Noto Sans TC', 'Work Sans', sans-serif;
+      --font-label: 'Space Mono', 'Noto Sans TC', monospace;
+
+      /* Shape */
+      --rounded: 0.25rem;
+      --rounded-lg: 0.5rem;
+      --rounded-full: 9999px;
+
+      /* Style effects */
+      --misregister: 3px 2px 0 rgb(255 82 180 / 0.85);
+      --ink-border: 2px solid var(--outline);
+      --ink-hairline: 1px solid var(--outline-variant);
+      --offset-pink: 5px 5px 0 var(--secondary);
+      --offset-blue: 5px 5px 0 var(--primary);
+      --offset-sm: 3px 3px 0 var(--primary);
+      --offset-sm-pink: 3px 3px 0 var(--secondary);
+      --halftone: radial-gradient(rgb(29 42 90 / 0.07) 1px, transparent 1.2px);
+      --halftone-size: 6px 6px;
+
+      /* Shared tokens */
+      --positive: #0f7b4c;
+      --positive-bg: #e4f6ed;
+      --warning: #b45309;
+      --error-bg: #fdeaea;
+      --focus: #006aa8;
+
+      /* Narrative type scale */
+      --display-size: clamp(2.4rem, 1.4rem + 3.6vw, 4.25rem);
+      --headline-size: clamp(1.65rem, 1.15rem + 1.8vw, 2.35rem);
+      --subhead-size: clamp(1.2rem, 1.05rem + 0.5vw, 1.45rem);
+      --body-size: clamp(1.0625rem, 1rem + 0.2vw, 1.125rem);
+      --label-size: clamp(0.75rem, 0.72rem + 0.15vw, 0.85rem);
+
+      /* Spacing scale (4pt base) */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2.5rem;
+      --space-2xl: 4rem;
+      --space-3xl: 6rem;
+
+      /* Motion */
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --dur-micro: 120ms;
+      --dur-short: 220ms;
+      --dur-long: 420ms;
+    }
+
+    /* Base reset */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { overflow-x: clip; margin: 0; padding: 0; }
+    header { position: static !important; }
+
+    body {
+      background-color: var(--background);
+      background-image: var(--halftone);
+      background-size: var(--halftone-size);
+      color: var(--on-surface);
+      font-family: var(--font-body);
+      font-size: var(--body-size);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    .page-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-2xl);
+      padding: var(--space-xl) var(--space-lg) var(--space-3xl);
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+    .page-grid * { min-width: 0; }
+
+    /* Typography helpers */
+    .misregister {
+      font-family: var(--font-headline);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: 0;
+      color: var(--primary);
+      text-shadow: var(--misregister);
+      margin: 0;
+    }
+
+    .display-title {
+      font-size: var(--display-size);
+    }
+
+    .section-title {
+      font-size: var(--headline-size);
+    }
+
+    .subhead {
+      font-family: var(--font-headline);
+      font-weight: 800;
+      font-size: var(--subhead-size);
+      line-height: 1.25;
+      color: var(--on-surface);
+      margin: 0;
+    }
+
+    .prose-block {
+      max-width: 65ch;
+      margin: 0;
+    }
+
+    .stamp {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      font-family: var(--font-label);
+      font-weight: 700;
+      font-size: var(--label-size);
+      letter-spacing: 0;
+      text-transform: none;
+      background: var(--primary);
+      color: var(--on-primary);
+      border-radius: var(--rounded-full);
+      padding: var(--space-xs) var(--space-md);
+      line-height: 1.3;
+    }
+
+    .stamp-alt {
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+      border: var(--ink-border);
+    }
+
+    .highlight-yellow {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      padding: 0.05em 0.35em;
+      font-weight: 700;
+      border-radius: var(--rounded);
+    }
+
+    .kicker-note {
+      font-family: var(--font-label);
+      font-size: var(--label-size);
+      font-weight: 700;
+      color: var(--tertiary);
+    }
+
+    .mono-num {
+      font-family: var(--font-label);
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+    }
+
+    /* Ink blocks (Riso treatment 2) */
+    .ink-block {
+      background: var(--surface-container-low);
+      border: var(--ink-border);
+      border-radius: var(--rounded-lg);
+      box-shadow: var(--offset-pink);
+      padding: var(--space-lg);
+    }
+
+    .ink-block-blue {
+      background: var(--surface-container-low);
+      border: var(--ink-border);
+      border-radius: var(--rounded-lg);
+      box-shadow: var(--offset-blue);
+      padding: var(--space-lg);
+    }
+
+    .ink-block-yellow {
+      background: var(--surface-container-high);
+      border: var(--ink-border);
+      border-radius: var(--rounded-lg);
+      box-shadow: var(--offset-blue);
+      padding: var(--space-lg);
+    }
+
+    .recessed-panel {
+      background: var(--surface-container);
+      border: var(--ink-border);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-lg);
+    }
+
+    /* Top masthead & jump nav */
+    .masthead {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: var(--space-xl);
+      align-items: start;
+      border-bottom: 2px solid var(--outline);
+      padding-bottom: var(--space-xl);
+    }
+
+    .masthead-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-md);
+    }
+
+    .lede {
+      margin-top: var(--space-md);
+      color: var(--on-surface-variant);
+      max-width: 58ch;
+      font-size: var(--body-size);
+    }
+
+    .progress-card {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--space-sm);
+    }
+
+    .progress-big {
+      font-family: var(--font-headline);
+      font-weight: 900;
+      font-size: clamp(2rem, 1.5rem + 1.5vw, 2.75rem);
+      line-height: 1;
+      color: var(--on-surface);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .progress-track {
+      height: 14px;
+      background: var(--background);
+      border: var(--ink-border);
+      border-radius: var(--rounded-full);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--primary);
+      transition: width var(--dur-long) var(--ease-out);
+    }
+
+    .chapter-rail {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      margin-top: var(--space-lg);
+    }
+
+    .jump-link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      min-height: 44px;
+      padding: var(--space-xs) var(--space-md);
+      background: var(--surface-container-low);
+      border: var(--ink-border);
+      border-radius: var(--rounded);
+      box-shadow: var(--offset-sm);
+      text-decoration: none;
+      color: var(--on-surface);
+      font-weight: 700;
+      font-size: var(--label-size);
+      transition: transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out), background-color var(--dur-micro) var(--ease-out);
+    }
+
+    .jump-link:hover {
+      background: var(--primary-container);
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0 var(--primary);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
+      min-height: 44px;
+      padding: var(--space-sm) var(--space-md);
+      border: var(--ink-border);
+      border-radius: var(--rounded);
+      font-family: var(--font-label);
+      font-weight: 700;
+      font-size: var(--label-size);
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform var(--dur-micro) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out), background-color var(--dur-micro) var(--ease-out);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--secondary);
+      color: var(--on-surface);
+      box-shadow: var(--offset-sm);
+    }
+    .btn-primary:hover:not(:disabled) {
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0 var(--primary);
+    }
+    .btn-primary:active:not(:disabled) {
+      transform: translate(3px, 3px);
+      box-shadow: none;
+    }
+
+    .btn-secondary {
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      box-shadow: var(--offset-sm);
+    }
+    .btn-secondary:hover:not(:disabled) {
+      transform: translate(1px, 1px);
+      box-shadow: 2px 2px 0 var(--primary);
+    }
+
+    .btn-outline {
+      background: var(--surface-container-low);
+      color: var(--on-surface);
+      box-shadow: none;
+    }
+    .btn-outline:hover:not(:disabled) {
+      background: var(--surface-container);
+    }
+
+    .btn-active {
+      background: var(--primary);
+      color: var(--on-primary);
+      box-shadow: var(--offset-sm-pink);
+    }
+
+    /* Section structure */
+    .unit-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+      border-top: 2px solid var(--outline);
+      padding-top: var(--space-xl);
+    }
+
+    .section-header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .section-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    /* Grids */
+    .card-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+      gap: var(--space-lg);
+    }
+
+    .split-asymmetric {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+      gap: var(--space-xl);
+      align-items: start;
+    }
+
+    .split-equal {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-lg);
+    }
+
+    /* Alternate ink-block shadows inside card grids */
+    .card-grid-3 > .ink-block:nth-child(even) {
+      background: var(--surface-container-high);
+      box-shadow: var(--offset-blue);
+    }
+
+    /* Formula Triangle & Key Figures */
+    .formula-card-value {
+      font-family: var(--font-headline);
+      font-weight: 900;
+      font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.75rem);
+      color: var(--on-surface);
+      margin: var(--space-xs) 0;
+    }
+
+    .stat-tile {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .stat-big {
+      font-family: var(--font-headline);
+      font-weight: 900;
+      font-size: clamp(1.85rem, 1.4rem + 1.2vw, 2.5rem);
+      line-height: 1.05;
+      color: var(--on-surface);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Inputs */
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .field-label {
+      font-family: var(--font-label);
+      font-weight: 700;
+      font-size: var(--label-size);
+      color: var(--on-surface);
+    }
+
+    .text-input, .num-input {
+      min-height: 44px;
+      padding: var(--space-xs) var(--space-sm);
+      background: var(--surface-container-low);
+      border: var(--ink-border);
+      border-radius: var(--rounded);
+      font-family: var(--font-label);
+      font-weight: 700;
+      color: var(--on-surface);
+      width: 100%;
+    }
+
+    .text-input:focus, .num-input:focus {
+      outline: 3px solid var(--focus);
+      outline-offset: 1px;
+      box-shadow: var(--offset-sm);
+    }
+
+    .range-slider {
+      width: 100%;
+      accent-color: var(--primary);
+      height: 28px;
+      cursor: pointer;
+    }
+
+    .controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      gap: var(--space-md);
+    }
+
+    /* Diagram SVG wrappers */
+    .diagram-stage {
+      background: var(--surface-container-low);
+      border: var(--ink-border);
+      border-radius: var(--rounded-lg);
+      padding: var(--space-md);
+      overflow: hidden;
+    }
+
+    .diagram-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      min-height: 180px;
+    }
+
+    .overprint-mark {
+      mix-blend-mode: multiply;
+    }
+
+    /* Comparison cards (Misconception) */
+    .compare-wrong {
+      background: var(--surface-container-low);
+      border: var(--ink-border);
+      border-radius: var(--rounded-lg);
+      box-shadow: var(--offset-pink);
+      padding: var(--space-lg);
+    }
+
+    .compare-right {
+      background: var(--surface-container-high);
+      border: var(--ink-border);
+      border-radius: var(--rounded-lg);
+      box-shadow: var(--offset-blue);
+      padding: var(--space-lg);
+    }
+
+    .verdict-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-xs);
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--rounded);
+      font-family: var(--font-label);
+      font-weight: 700;
+      font-size: var(--label-size);
+      border: var(--ink-border);
+    }
+
+    .verdict-error {
+      background: var(--error-bg);
+      color: var(--error);
+    }
+
+    .verdict-ok {
+      background: var(--positive-bg);
+      color: var(--positive);
+    }
+
+    /* Tables */
+    .riso-table-wrap {
+      overflow-x: auto;
+    }
+
+    .riso-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+
+    .riso-table th {
+      font-family: var(--font-label);
+      font-weight: 700;
+      font-size: var(--label-size);
+      text-align: left;
+      padding: var(--space-sm) var(--space-md);
+      border-bottom: 2px solid var(--outline);
+      color: var(--on-surface);
+      white-space: nowrap;
+    }
+
+    .riso-table td {
+      padding: var(--space-sm) var(--space-md);
+      border-bottom: var(--ink-hairline);
+      vertical-align: middle;
+    }
+
+    .riso-table tr.row-highlight td {
+      background: var(--surface-container-high);
+      font-weight: 700;
+    }
+
+    .cell-input {
+      width: 82px;
+      min-height: 38px;
+      padding: var(--space-xs) var(--space-sm);
+      background: var(--surface-container-low);
+      border: var(--ink-border);
+      border-radius: var(--rounded);
+      font-family: var(--font-label);
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .cell-input.is-correct {
+      background: var(--positive-bg);
+      color: var(--positive);
+    }
+
+    .cell-input.is-wrong {
+      background: var(--error-bg);
+      color: var(--error);
+    }
+
+    /* Interactive Practice Questions */
+    .practice-deck {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+      gap: var(--space-lg);
+    }
+
+    .quiz-card {
+      background: var(--surface-container-low);
+      border: var(--ink-border);
+      border-radius: var(--rounded-lg);
+      box-shadow: var(--offset-sm);
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .quiz-card.answered-correct {
+      background: var(--surface-container-high);
+      box-shadow: var(--offset-blue);
+    }
+
+    .quiz-prompt {
+      margin: 0;
+      font-weight: 600;
+      color: var(--on-surface);
+    }
+
+    .option-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-sm);
+    }
+
+    .option-btn {
+      min-height: 44px;
+      padding: var(--space-xs) var(--space-sm);
+      background: var(--background);
+      border: var(--ink-border);
+      border-radius: var(--rounded);
+      font-family: var(--font-label);
+      font-weight: 700;
+      font-size: var(--label-size);
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      transition: background-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out);
+    }
+
+    .option-btn:hover {
+      background: var(--primary-container);
+    }
+
+    .option-btn.selected-correct {
+      background: var(--positive-bg);
+      color: var(--positive);
+      box-shadow: 2px 2px 0 var(--positive);
+    }
+
+    .option-btn.selected-wrong {
+      background: var(--error-bg);
+      color: var(--error);
+    }
+
+    .feedback-box {
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--rounded);
+      border: var(--ink-border);
+      font-size: 0.94rem;
+      display: none;
+    }
+
+    .feedback-box.visible {
+      display: block;
+    }
+
+    .feedback-box.ok {
+      background: var(--positive-bg);
+      color: var(--on-surface);
+    }
+
+    .feedback-box.err {
+      background: var(--error-bg);
+      color: var(--on-surface);
+    }
+
+    .step-math {
+      font-family: var(--font-label);
+      font-size: 0.9rem;
+      margin-top: var(--space-xs);
+      color: var(--on-surface);
+      line-height: 1.55;
+    }
+
+    /* Warmup fill-in-blank row */
+    .warmup-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+      gap: var(--space-md);
+    }
+
+    .warmup-item {
+      background: var(--background);
+      border: var(--ink-border);
+      border-radius: var(--rounded);
+      padding: var(--space-md);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .inline-answer-row {
+      display: flex;
+      align-items: flex-end;
+      gap: var(--space-sm);
+    }
+
+    /* Collapsible details */
+    details.riso-details {
+      border: var(--ink-border);
+      border-radius: var(--rounded);
+      background: var(--background);
+      padding: var(--space-sm) var(--space-md);
+    }
+
+    details.riso-details summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--primary);
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    details.riso-details[open] summary {
+      margin-bottom: var(--space-sm);
+      border-bottom: var(--ink-hairline);
+      padding-bottom: var(--space-xs);
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 2px solid var(--outline);
+      padding-top: var(--space-lg);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-md);
+      color: var(--on-surface-variant);
+      font-size: var(--label-size);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 820px) {
+      .masthead {
+        grid-template-columns: 1fr;
+      }
+      .split-asymmetric, .split-equal {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page-grid {
+        padding: var(--space-md) var(--space-sm) var(--space-2xl);
+        gap: var(--space-xl);
+      }
+      .option-list {
+        grid-template-columns: 1fr;
+      }
+      .ink-block, .ink-block-blue, .ink-block-yellow {
+        padding: var(--space-md);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page-grid">
+
+    <!-- ==================== HERO & WARMUP ==================== -->
+    <header class="masthead">
+      <div>
+        <div class="masthead-meta">
+          <span class="stamp">國小六年級數學｜第二單元</span>
+          <span class="stamp stamp-alt">互動觀念與實作練習</span>
+        </div>
+        <h1 class="misregister display-title">速率的應用</h1>
+        <p class="lede">
+          速率不只是「距離除以時間」。當生活中有上山與下山、兩人反方向分開或迎面相遇、後車追趕前車、船在河裡順流或逆流航行時，只要畫出移動軌跡並抓住「單位時間的變化量」，複雜的行程問題都能迎刃而解。
+        </p>
+        <nav class="chapter-rail" aria-label="單元章節導覽">
+          <a class="jump-link" href="#sec-warmup"><i data-lucide="compass" width="16" height="16"></i>課前回顧</a>
+          <a class="jump-link" href="#sec-avg"><i data-lucide="mountain" width="16" height="16"></i>2-1 平均速率與迷思</a>
+          <a class="jump-link" href="#sec-meet"><i data-lucide="git-compare-arrows" width="16" height="16"></i>2-2 相離與相遇</a>
+          <a class="jump-link" href="#sec-chase"><i data-lucide="gauge" width="16" height="16"></i>2-3 追趕問題</a>
+          <a class="jump-link" href="#sec-river"><i data-lucide="waves" width="16" height="16"></i>2-4 流水問題</a>
+          <a class="jump-link" href="#sec-summary"><i data-lucide="book-check" width="16" height="16"></i>公式總整理與測驗</a>
+        </nav>
+      </div>
+
+      <aside class="ink-block-yellow progress-card" aria-label="學習進度追蹤">
+        <div class="progress-header">
+          <span class="kicker-note">互動挑戰進度</span>
+          <span class="mono-num" id="progress-ratio">0 / 12 題完成</span>
+        </div>
+        <div class="progress-big" id="progress-percent">0%</div>
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar-wrap">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <p style="margin:0; font-size:0.9rem; color:var(--on-surface-variant);" id="progress-status-msg">
+          尚未作答任何題目，試著從下方的暖身練習或各節互動題庫開始吧！
+        </p>
+        <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-xs);">
+          <button type="button" class="btn btn-outline" id="btn-reset-progress" onclick="handleResetProgress(this)">
+            <i data-lucide="rotate-ccw" width="16" height="16"></i>重設所有紀錄
+          </button>
+        </div>
+      </aside>
+    </header>
+
+    <!-- ==================== WARMUP REVIEW ==================== -->
+    <section class="unit-section" id="sec-warmup">
+      <div class="section-header">
+        <div class="section-meta-row">
+          <span class="stamp">暖身回顧</span>
+          <span class="kicker-note">先備觀念：平均每單位時間所移動的距離，稱為速率</span>
+        </div>
+        <h2 class="misregister section-title">距離、時間與速率的三角關係</h2>
+        <p class="prose-block">
+          常見的速率單位有時速（公里/時，<span class="mono-num">km/h</span>）、分速（公尺/分，<span class="mono-num">m/min</span>）與秒速（公尺/秒，<span class="mono-num">m/s</span>）。只要掌握這三個基本關係式，就能推導出本單元的所有應用題型。
+        </p>
+      </div>
+
+      <div class="card-grid-3">
+        <div class="ink-block">
+          <span class="kicker-note">求速率</span>
+          <div class="formula-card-value">速率 ＝ 距離 ÷ 時間</div>
+          <p style="margin:0; color:var(--on-surface-variant); font-size:0.95rem;">
+            例：王教練健行進入秘魯馬丘比丘前，每天花 <span class="mono-num">6</span> 小時健走 <span class="mono-num">42</span> 公里，速率為 <span class="mono-num">42 ÷ 6 ＝ 7</span> 公里/時。
+          </p>
+        </div>
+        <div class="ink-block">
+          <span class="kicker-note">求距離</span>
+          <div class="formula-card-value">距離 ＝ 速率 × 時間</div>
+          <p style="margin:0; color:var(--on-surface-variant); font-size:0.95rem;">
+            例：姐姐騎車分速 <span class="mono-num">300</span> 公尺，花 <span class="mono-num">10</span> 分鐘到學校，相距 <span class="mono-num">300 × 10 ＝ 3000</span> 公尺。
+          </p>
+        </div>
+        <div class="ink-block">
+          <span class="kicker-note">求時間</span>
+          <div class="formula-card-value">時間 ＝ 距離 ÷ 速率</div>
+          <p style="margin:0; color:var(--on-surface-variant); font-size:0.95rem;">
+            例：客運時速 <span class="mono-num">50</span> 公里，行駛相距 <span class="mono-num">150</span> 公里的甲乙兩地，需要 <span class="mono-num">150 ÷ 50 ＝ 3</span> 小時。
+          </p>
+        </div>
+      </div>
+
+      <div class="recessed-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:var(--space-sm); margin-bottom:var(--space-md);">
+          <h3 class="subhead">課前暖身填填看：算出對應的速率</h3>
+          <span class="kicker-note">輸入數字後按「檢查答案」</span>
+        </div>
+        <div class="warmup-grid">
+          <div class="warmup-item">
+            <div style="font-size:0.95rem;">距離 <strong class="mono-num">750</strong> 公尺，時間 <strong class="mono-num">25</strong> 秒鐘</div>
+            <div class="inline-answer-row">
+              <div class="field-group" style="flex:1;">
+                <label class="field-label" for="w1-input">速率（公尺/秒）</label>
+                <input class="num-input" type="number" id="w1-input" inputmode="decimal" placeholder="輸入數字">
+              </div>
+              <button type="button" class="btn btn-secondary" onclick="checkWarmup('w1', 30, '750 ÷ 25 ＝ 30 公尺/秒')">檢查</button>
+            </div>
+            <div class="feedback-box" id="w1-fb"></div>
+          </div>
+
+          <div class="warmup-item">
+            <div style="font-size:0.95rem;">距離 <strong class="mono-num">200</strong> 公尺，時間 <strong class="mono-num">5</strong> 分鐘</div>
+            <div class="inline-answer-row">
+              <div class="field-group" style="flex:1;">
+                <label class="field-label" for="w2-input">速率（公尺/分）</label>
+                <input class="num-input" type="number" id="w2-input" inputmode="decimal" placeholder="輸入數字">
+              </div>
+              <button type="button" class="btn btn-secondary" onclick="checkWarmup('w2', 40, '200 ÷ 5 ＝ 40 公尺/分')">檢查</button>
+            </div>
+            <div class="feedback-box" id="w2-fb"></div>
+          </div>
+
+          <div class="warmup-item">
+            <div style="font-size:0.95rem;">距離 <strong class="mono-num">160</strong> 公里，時間 <strong class="mono-num">4</strong> 小時</div>
+            <div class="inline-answer-row">
+              <div class="field-group" style="flex:1;">
+                <label class="field-label" for="w3-input">速率（公里/時）</label>
+                <input class="num-input" type="number" id="w3-input" inputmode="decimal" placeholder="輸入數字">
+              </div>
+              <button type="button" class="btn btn-secondary" onclick="checkWarmup('w3', 40, '160 ÷ 4 ＝ 40 公里/時')">檢查</button>
+            </div>
+            <div class="feedback-box" id="w3-fb"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 2-1: AVERAGE SPEED ==================== -->
+    <section class="unit-section" id="sec-avg">
+      <div class="section-header">
+        <div class="section-meta-row">
+          <span class="stamp">2-1 平均速率問題</span>
+          <span class="kicker-note">核心關鍵：總距離 ÷ 總時間 ＝ 平均速率</span>
+        </div>
+        <h2 class="misregister section-title">全程平均速率不是把速率加起來除以二</h2>
+        <p class="prose-block">
+          當移動過程分成好幾段（例如經過甲地、乙地到丙地，或是上山與下山），每一段的速度和時間可能都不同。求全程平均速率時，一定要先算出<span class="highlight-yellow">總距離</span>與<span class="highlight-yellow">總時間</span>，再將兩者相除。
+        </p>
+      </div>
+
+      <!-- 3-place schematic -->
+      <div class="ink-block">
+        <div class="split-asymmetric">
+          <div>
+            <h3 class="subhead" style="margin-bottom:var(--space-sm);">三地分段移動圖解：爸爸開車從甲地到丙地</h3>
+            <p style="margin:0 0 var(--space-md) 0; color:var(--on-surface-variant);">
+              爸爸從甲地到乙地開了 <span class="mono-num">800</span> 公尺、花了 <span class="mono-num">4</span> 分鐘；從乙地到丙地開了 <span class="mono-num">900</span> 公尺、花了 <span class="mono-num">6</span> 分鐘。全程的平均速率是多少？
+            </p>
+            <div class="diagram-stage">
+              <svg class="diagram-svg" viewBox="0 0 640 165" role="img" aria-label="甲地經乙地到丙地的分段距離與時間示意圖">
+                <line x1="60" y1="90" x2="580" y2="90" stroke="var(--outline)" stroke-width="4" stroke-linecap="round"/>
+                <!-- Segment 1 -->
+                <rect x="65" y="40" width="235" height="36" rx="4" fill="var(--data-1)" class="overprint-mark"/>
+                <text x="182" y="63" text-anchor="middle" fill="var(--on-primary)" font-family="Space Mono, Noto Sans TC, monospace" font-size="14" font-weight="700">800 公尺 ｜ 4 分鐘</text>
+                <!-- Segment 2 -->
+                <rect x="310" y="40" width="265" height="36" rx="4" fill="var(--data-2)" class="overprint-mark"/>
+                <text x="442" y="63" text-anchor="middle" fill="var(--on-primary)" font-family="Space Mono, Noto Sans TC, monospace" font-size="14" font-weight="700">900 公尺 ｜ 6 分鐘</text>
+                <!-- Nodes -->
+                <circle cx="60" cy="90" r="10" fill="var(--primary-container)" stroke="var(--outline)" stroke-width="3"/>
+                <circle cx="305" cy="90" r="10" fill="var(--surface-container-low)" stroke="var(--outline)" stroke-width="3"/>
+                <circle cx="580" cy="90" r="10" fill="var(--secondary)" stroke="var(--outline)" stroke-width="3"/>
+                <text x="60" y="122" text-anchor="middle" fill="var(--on-surface)" font-family="Noto Sans TC, sans-serif" font-size="15" font-weight="700">甲地</text>
+                <text x="305" y="122" text-anchor="middle" fill="var(--on-surface)" font-family="Noto Sans TC, sans-serif" font-size="15" font-weight="700">乙地</text>
+                <text x="580" y="122" text-anchor="middle" fill="var(--on-surface)" font-family="Noto Sans TC, sans-serif" font-size="15" font-weight="700">丙地</text>
+                <!-- Total span -->
+                <line x1="60" y1="142" x2="580" y2="142" stroke="var(--primary)" stroke-width="2" stroke-dasharray="4 4"/>
+                <rect x="195" y="130" width="250" height="24" rx="4" fill="var(--surface-container-high)" stroke="var(--outline)" stroke-width="1.5"/>
+                <text x="320" y="147" text-anchor="middle" fill="var(--on-surface)" font-family="Space Mono, Noto Sans TC, monospace" font-size="13" font-weight="700">總距離 1700 m ÷ 總時間 10 min</text>
+              </svg>
+            </div>
+          </div>
+          <div class="recessed-panel">
+            <span class="kicker-note">步驟拆解</span>
+            <ol style="padding-left:1.25rem; margin:var(--space-sm) 0 0 0; display:flex; flex-direction:column; gap:var(--space-sm);">
+              <li><strong>先求總距離：</strong><span class="mono-num">800 ＋ 900 ＝ 1700</span>（公尺）</li>
+              <li><strong>再求總時間：</strong><span class="mono-num">4 ＋ 6 ＝ 10</span>（分鐘）</li>
+              <li><strong>相除得平均速率：</strong><span class="mono-num">1700 ÷ 10 ＝ 170</span>（公尺/分）</li>
+            </ol>
+            <div style="margin-top:var(--space-md); padding-top:var(--space-sm); border-top:var(--ink-hairline); font-size:0.92rem; color:var(--on-surface-variant);">
+              另一題「承恩從書店經郵局到公園」距離 <span class="mono-num">1100＋500＝1600</span> 公尺，總時間已給 <span class="mono-num">8</span> 分鐘，直接 <span class="mono-num">1600 ÷ 8 ＝ 200</span> 公尺/分。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Mountain Lab: Misconception Analysis -->
+      <div class="ink-block-blue">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:var(--space-sm); margin-bottom:var(--space-md);">
+          <div>
+            <span class="stamp">迷思實驗室</span>
+            <h3 class="subhead" style="margin-top:var(--space-xs);">登山健行迷思大破解：為什麼妙妙算錯了？</h3>
+          </div>
+          <button type="button" class="btn btn-outline" onclick="resetMountainPreset()">恢復課本數據（6 km, 上2 / 下3）</button>
+        </div>
+
+        <p style="margin:0 0 var(--space-md) 0;">
+          課本經典題：柏宇參加登山健行，山路長 <strong class="mono-num" id="mtn-text-dist">6</strong> 公里。他以 <strong class="mono-num" id="mtn-text-up">2</strong> 公里/時的速率上山，以 <strong class="mono-num" id="mtn-text-down">3</strong> 公里/時的速率走原路下山，全程平均速率是多少？拖動滑桿親自驗證！
+        </p>
+
+        <div class="card-grid-3" style="margin-bottom:var(--space-lg);">
+          <div class="field-group">
+            <label class="field-label" for="mtn-dist-slider">單趟山路距離：<span class="mono-num" id="mtn-dist-val">6</span> 公里</label>
+            <input class="range-slider" type="range" id="mtn-dist-slider" min="2" max="15" step="1" value="6" oninput="updateMountainLab()">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="mtn-up-slider">上山速率：<span class="mono-num" id="mtn-up-val">2</span> 公里/時</label>
+            <input class="range-slider" type="range" id="mtn-up-slider" min="1" max="6" step="0.5" value="2" oninput="updateMountainLab()">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="mtn-down-slider">下山速率：<span class="mono-num" id="mtn-down-val">3</span> 公里/時</label>
+            <input class="range-slider" type="range" id="mtn-down-slider" min="2" max="10" step="0.5" value="3" oninput="updateMountainLab()">
+          </div>
+        </div>
+
+        <!-- Dynamic SVG Mountain Time Visualization -->
+        <div class="diagram-stage" style="margin-bottom:var(--space-lg);">
+          <svg class="diagram-svg" id="mtn-svg" viewBox="0 0 680 210" role="img" aria-label="上山與下山耗時長條與山路示意圖">
+            <!-- Mountain shape -->
+            <polygon points="40,155 210,35 380,155" fill="var(--surface-container)" stroke="var(--outline)" stroke-width="2.5"/>
+            <line x1="40" y1="155" x2="210" y2="35" stroke="var(--data-1)" stroke-width="5" stroke-linecap="round"/>
+            <line x1="210" y1="35" x2="380" y2="155" stroke="var(--data-2)" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="210" cy="35" r="7" fill="var(--primary-container)" stroke="var(--outline)" stroke-width="2"/>
+            <text x="210" y="22" text-anchor="middle" fill="var(--on-surface)" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="700">山頂折返</text>
+            <text x="95" y="85" text-anchor="middle" fill="var(--primary)" font-family="Space Mono, Noto Sans TC, monospace" font-size="13" font-weight="700" id="svg-mtn-up-lbl">上山 2 km/h</text>
+            <text x="325" y="85" text-anchor="middle" fill="var(--tertiary)" font-family="Space Mono, Noto Sans TC, monospace" font-size="13" font-weight="700" id="svg-mtn-down-lbl">下山 3 km/h</text>
+            <text x="210" y="182" text-anchor="middle" fill="var(--on-surface-variant)" font-family="Space Mono, Noto Sans TC, monospace" font-size="13" font-weight="700" id="svg-mtn-dist-lbl">單趟 6 km ｜ 來回總距 12 km</text>
+
+            <!-- Time comparison bar on right -->
+            <text x="415" y="42" fill="var(--on-surface)" font-family="Noto Sans TC, sans-serif" font-size="14" font-weight="700">為什麼不是相加除以 2？</text>
+            <text x="415" y="64" fill="var(--on-surface-variant)" font-family="Noto Sans TC, sans-serif" font-size="12.5">上山走得慢，所以花的時間比較久！</text>
+            <!-- Up time bar -->
+            <rect x="415" y="82" width="144" height="28" rx="4" fill="var(--data-1)" id="svg-bar-up"/>
+            <text x="423" y="101" fill="var(--on-primary)" font-family="Space Mono, Noto Sans TC, monospace" font-size="12" font-weight="700" id="svg-bar-up-txt">上山 3 小時</text>
+            <!-- Down time bar -->
+            <rect x="415" y="120" width="96" height="28" rx="4" fill="var(--data-2)" id="svg-bar-down"/>
+            <text x="423" y="139" fill="var(--on-primary)" font-family="Space Mono, Noto Sans TC, monospace" font-size="12" font-weight="700" id="svg-bar-down-txt">下山 2 小時</text>
+            <!-- Total time note -->
+            <text x="415" y="176" fill="var(--on-surface)" font-family="Space Mono, Noto Sans TC, monospace" font-size="13" font-weight="700" id="svg-mtn-time-total">總時間 ＝ 5 小時</text>
+          </svg>
+        </div>
+
+        <div class="split-equal">
+          <div class="compare-wrong">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-sm);">
+              <span class="subhead">妙妙的做法</span>
+              <span class="verdict-badge verdict-error"><i data-lucide="x-circle" width="15" height="15"></i>錯誤迷思</span>
+            </div>
+            <div class="mono-num" style="font-size:1.15rem; margin-bottom:var(--space-xs);" id="mtn-wrong-eq">
+              (2 ＋ 3) ÷ 2 ＝ 2.5 公里/時
+            </div>
+            <p style="margin:0; font-size:0.94rem; color:var(--on-surface-variant);" id="mtn-wrong-proof">
+              反證驗算：如果平均速率真的是 2.5 公里/時，走了 5 小時總距離會變成 2.5 × 5 ＝ 12.5 公里，但實際來回只有 12 公里，互相矛盾！
+            </p>
+          </div>
+
+          <div class="compare-right">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-sm);">
+              <span class="subhead">豆豆的做法</span>
+              <span class="verdict-badge verdict-ok"><i data-lucide="check-circle-2" width="15" height="15"></i>正確解法</span>
+            </div>
+            <div class="mono-num" style="font-size:1.15rem; margin-bottom:var(--space-xs);" id="mtn-right-eq">
+              12 ÷ (3 ＋ 2) ＝ 2.4 公里/時
+            </div>
+            <p style="margin:0; font-size:0.94rem; color:var(--on-surface);" id="mtn-right-steps">
+              上山時間 6÷2＝3 時，下山時間 6÷3＝2 時；總距離 6×2＝12 公里，總時間 3＋2＝5 小時，因此 12÷5＝2.4 公里/時。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2-1 Practice -->
+      <div class="practice-deck">
+        <article class="quiz-card" id="q-avg-1">
+          <div class="section-meta-row">
+            <span class="stamp">隨堂練習 1</span>
+            <span class="kicker-note">三地平均速率</span>
+          </div>
+          <p class="quiz-prompt">
+            媽媽開車從家裡到學校（<span class="mono-num">12</span> 公里）花了 <span class="mono-num">0.25</span> 小時，從學校到公司（<span class="mono-num">8</span> 公里）花了 <span class="mono-num">0.15</span> 小時，她從家裡經學校到公司的平均速率是多少公里/時？
+          </p>
+          <div class="option-list">
+            <button type="button" class="option-btn" onclick="answerQuiz('q-avg-1', 0, 1)">A. 45 公里/時</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-avg-1', 1, 1)">B. 50 公里/時</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-avg-1', 2, 1)">C. 52 公里/時</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-avg-1', 3, 1)">D. 40 公里/時</button>
+          </div>
+          <div class="feedback-box" id="q-avg-1-fb"></div>
+        </article>
+
+        <article class="quiz-card" id="q-avg-2">
+          <div class="section-meta-row">
+            <span class="stamp">隨堂練習 2</span>
+            <span class="kicker-note">來回平均速率</span>
+          </div>
+          <p class="quiz-prompt">
+            爸爸以 <span class="mono-num">45</span> 公里/時的速率開車從家裡到 <span class="mono-num">9</span> 公里外的大賣場，回程塞車以 <span class="mono-num">36</span> 公里/時沿原路回家，來回全程的平均速率是多少公里/時？
+          </p>
+          <div class="option-list">
+            <button type="button" class="option-btn" onclick="answerQuiz('q-avg-2', 0, 2)">A. 40.5 公里/時</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-avg-2', 1, 2)">B. 42 公里/時</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-avg-2', 2, 2)">C. 40 公里/時</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-avg-2', 3, 2)">D. 38 公里/時</button>
+          </div>
+          <div class="feedback-box" id="q-avg-2-fb"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 2-2: SEPARATION & MEETING ==================== -->
+    <section class="unit-section" id="sec-meet">
+      <div class="section-header">
+        <div class="section-meta-row">
+          <span class="stamp">2-2 相離與相遇問題</span>
+          <span class="kicker-note">核心關鍵：先算出「每單位時間（1 分鐘）兩人相距的變化」</span>
+        </div>
+        <h2 class="misregister section-title">同向相減、反向相加：直線與環形步道一次看懂</h2>
+        <p class="prose-block">
+          無論是背對背走遠（相離）、面對面靠近（相遇），還是在環形步道上繞圈，只要先算出「<span class="highlight-yellow">1 分鐘後兩人的距離增加或減少了多少</span>」，就能直接推算任意時間後的距離或相遇時間。
+        </p>
+      </div>
+
+      <!-- Interactive Motion Simulator -->
+      <div class="ink-block-yellow">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:var(--space-sm); margin-bottom:var(--space-md);">
+          <h3 class="subhead">動態運動模擬器：切換四種經典情境</h3>
+          <div style="display:flex; flex-wrap:wrap; gap:var(--space-xs);">
+            <button type="button" class="btn btn-active" id="mode-btn-opposite" onclick="setMeetMode('opposite')">1. 同地反方向（相離）</button>
+            <button type="button" class="btn btn-outline" id="mode-btn-same" onclick="setMeetMode('same')">2. 同地同方向（相離）</button>
+            <button type="button" class="btn btn-outline" id="mode-btn-toward" onclick="setMeetMode('toward')">3. 兩地相向（相遇）</button>
+            <button type="button" class="btn btn-outline" id="mode-btn-circle" onclick="setMeetMode('circle')">4. 環形步道（相遇）</button>
+          </div>
+        </div>
+
+        <p style="margin:0 0 var(--space-md) 0;" id="meet-scenario-desc">
+          <strong>課本範例：</strong>詠安走路速率 <span class="mono-num">75</span> 公尺/分，宇翔走路速率 <span class="mono-num">65</span> 公尺/分。兩人同時同地反方向出發，<span class="mono-num">5</span> 分鐘後相距幾公尺？
+        </p>
+
+        <!-- Controls -->
+        <div class="controls-row" style="margin-bottom:var(--space-md);">
+          <div class="field-group" style="flex:1; min-width:200px;">
+            <label class="field-label" for="meet-time-slider">經過時間：<span class="mono-num" id="meet-time-val">0</span> 分鐘（拖動時間軸觀察）</label>
+            <input class="range-slider" type="range" id="meet-time-slider" min="0" max="10" step="0.5" value="0" oninput="onMeetTimeSlide(this.value)">
+          </div>
+          <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap;">
+            <button type="button" class="btn btn-primary" id="btn-meet-play" onclick="toggleMeetPlay()">
+              <i data-lucide="play" width="16" height="16"></i>播放動態
+            </button>
+            <button type="button" class="btn btn-outline" onclick="resetMeetSim()">
+              <i data-lucide="rotate-ccw" width="16" height="16"></i>歸零
+            </button>
+          </div>
+        </div>
+
+        <!-- SVG Stage -->
+        <div class="diagram-stage" style="margin-bottom:var(--space-md);">
+          <svg class="diagram-svg" id="meet-svg" viewBox="0 0 680 220" role="img" aria-label="相離與相遇動態路線圖"></svg>
+        </div>
+
+        <!-- Live Telemetry Readouts -->
+        <div class="card-grid-3">
+          <div class="ink-block stat-tile">
+            <span class="kicker-note">每分鐘距離變化（單位時間）</span>
+            <div class="stat-big" id="meet-unit-delta">75 ＋ 65 ＝ 140 m</div>
+            <div style="font-size:0.9rem; color:var(--on-surface-variant);" id="meet-unit-note">反向而行，速率相加</div>
+          </div>
+          <div class="ink-block stat-tile">
+            <span class="kicker-note">兩人目前各走距離</span>
+            <div class="stat-big" id="meet-each-dist">0 m / 0 m</div>
+            <div style="font-size:0.9rem; color:var(--on-surface-variant);" id="meet-each-names">詠安 ｜ 宇翔</div>
+          </div>
+          <div class="ink-block stat-tile">
+            <span class="kicker-note">目前兩人相距</span>
+            <div class="stat-big" id="meet-current-gap">0 公尺</div>
+            <div style="font-size:0.9rem; color:var(--tertiary); font-weight:700;" id="meet-answer-note">目標：5 分鐘後相距 700 公尺</div>
+          </div>
+        </div>
+
+        <details class="riso-details" style="margin-top:var(--space-md);">
+          <summary><i data-lucide="lightbulb" width="16" height="16"></i>為什麼「環形步道」反方向出發也用速率相加？</summary>
+          <p style="margin:0; font-size:0.95rem;">
+            把環形步道從入口剪開拉直，就是一條全長 <span class="mono-num">2400</span> 公尺的直線道路！豆豆和妙妙分別從兩端相向出發，兩人走過的距離合起來剛好等於一整圈 <span class="mono-num">2400</span> 公尺，所以每分鐘拉近 <span class="mono-num">88 ＋ 72 ＝ 160</span> 公尺，<span class="mono-num">2400 ÷ 160 ＝ 15</span> 分鐘後相遇。
+          </p>
+        </details>
+      </div>
+
+      <!-- 2-2 Practice -->
+      <div class="practice-deck">
+        <article class="quiz-card" id="q-meet-1">
+          <div class="section-meta-row">
+            <span class="stamp">隨堂練習 3</span>
+            <span class="kicker-note">反方向求時間</span>
+          </div>
+          <p class="quiz-prompt">
+            姐姐和弟弟走路速率分別是 <span class="mono-num">74</span> 公尺/分和 <span class="mono-num">71</span> 公尺/分，兩人同時同地反方向出發，幾分鐘後會相距 <span class="mono-num">1015</span> 公尺？
+          </p>
+          <div class="option-list">
+            <button type="button" class="option-btn" onclick="answerQuiz('q-meet-1', 0, 1)">A. 6 分鐘後</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-meet-1', 1, 1)">B. 7 分鐘後</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-meet-1', 2, 1)">C. 8 分鐘後</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-meet-1', 3, 1)">D. 9 分鐘後</button>
+          </div>
+          <div class="feedback-box" id="q-meet-1-fb"></div>
+        </article>
+
+        <article class="quiz-card" id="q-meet-2">
+          <div class="section-meta-row">
+            <span class="stamp">隨堂練習 4</span>
+            <span class="kicker-note">相向未相遇求距離</span>
+          </div>
+          <p class="quiz-prompt">
+            哥哥（<span class="mono-num">75</span> 公尺/分）和妹妹（<span class="mono-num">60</span> 公尺/分）相距 <span class="mono-num">2025</span> 公尺，同時相向出發。<span class="mono-num">6</span> 分鐘後，兩人共走了幾公尺？這時相距幾公尺？
+          </p>
+          <div class="option-list">
+            <button type="button" class="option-btn" onclick="answerQuiz('q-meet-2', 0, 0)">A. 共走 810 m，相距 1215 m</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-meet-2', 1, 0)">B. 共走 810 m，相距 1315 m</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-meet-2', 2, 0)">C. 共走 90 m，相距 1935 m</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-meet-2', 3, 0)">D. 共走 1215 m，相距 810 m</button>
+          </div>
+          <div class="feedback-box" id="q-meet-2-fb"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 2-3: CHASE PROBLEMS ==================== -->
+    <section class="unit-section" id="sec-chase">
+      <div class="section-header">
+        <div class="section-meta-row">
+          <span class="stamp">2-3 追趕問題</span>
+          <span class="kicker-note">核心關鍵：追趕時間 ＝ 相差距離 ÷ 速率差</span>
+        </div>
+        <h2 class="misregister section-title">用「速率差」算出每單位時間追近的距離</h2>
+        <p class="prose-block">
+          兩者往同方向前進時，後方的速度快才能追上前方。每經過 <span class="mono-num">1</span> 小時（或 <span class="mono-num">1</span> 分鐘），後方會拉近「<span class="highlight-yellow">快車速率 － 慢車速率</span>」的距離。如果題目只給「先出發的時間」，記得先算出那段時間拉開的距離！
+        </p>
+      </div>
+
+      <!-- Interactive Red vs Blue Car Table + Track -->
+      <div class="ink-block">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:var(--space-sm); margin-bottom:var(--space-md);">
+          <div>
+            <h3 class="subhead">紅車追藍車：填寫進度表找出追上的時刻</h3>
+            <p style="margin:var(--space-xs) 0 0 0; color:var(--on-surface-variant); font-size:0.95rem;">
+              紅車速 <strong class="mono-num">80</strong> 公里/時，藍車速 <strong class="mono-num">75</strong> 公里/時。藍車先前進 <strong class="mono-num">25</strong> 公里後紅車才出發。
+            </p>
+          </div>
+          <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap;">
+            <button type="button" class="btn btn-secondary" onclick="verifyChaseTable()">檢查表格</button>
+            <button type="button" class="btn btn-outline" onclick="fillChaseTableAnswer()">填入示範答案</button>
+          </div>
+        </div>
+
+        <!-- Track visual driven by hour selector -->
+        <div class="controls-row" style="margin-bottom:var(--space-md);">
+          <div class="field-group" style="flex:1; min-width:220px;">
+            <label class="field-label" for="chase-hour-slider">觀察紅車出發後第 <span class="mono-num" id="chase-hour-val">0</span> 小時的位置</label>
+            <input class="range-slider" type="range" id="chase-hour-slider" min="0" max="5" step="1" value="0" oninput="updateChaseVisual(this.value)">
+          </div>
+          <div class="stamp stamp-alt" id="chase-gap-badge">兩車相距：25 公里</div>
+        </div>
+
+        <div class="diagram-stage" style="margin-bottom:var(--space-lg);">
+          <svg class="diagram-svg" id="chase-svg" viewBox="0 0 680 155" role="img" aria-label="紅車與藍車追趕位置示意圖"></svg>
+        </div>
+
+        <div class="riso-table-wrap">
+          <table class="riso-table" aria-label="紅車與藍車追趕距離記錄表">
+            <thead>
+              <tr>
+                <th>經過時間（小時）</th>
+                <th>藍車前進距離（公里）</th>
+                <th>紅車前進距離（公里）</th>
+                <th>紅車追近距離（公里）</th>
+                <th>兩車相距距離（公里）</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono-num">0</td>
+                <td class="mono-num">0</td>
+                <td class="mono-num">0</td>
+                <td class="mono-num">0</td>
+                <td class="mono-num">25</td>
+              </tr>
+              <tr>
+                <td class="mono-num">1</td>
+                <td class="mono-num">75</td>
+                <td class="mono-num">80</td>
+                <td class="mono-num">5</td>
+                <td class="mono-num">20</td>
+              </tr>
+              <tr>
+                <td class="mono-num">2</td>
+                <td><input class="cell-input" type="number" id="ct-2-b" aria-label="第2小時藍車前進距離"></td>
+                <td><input class="cell-input" type="number" id="ct-2-r" aria-label="第2小時紅車前進距離"></td>
+                <td><input class="cell-input" type="number" id="ct-2-c" aria-label="第2小時紅車追近距離"></td>
+                <td><input class="cell-input" type="number" id="ct-2-g" aria-label="第2小時兩車相距距離"></td>
+              </tr>
+              <tr>
+                <td class="mono-num">3</td>
+                <td><input class="cell-input" type="number" id="ct-3-b" aria-label="第3小時藍車前進距離"></td>
+                <td><input class="cell-input" type="number" id="ct-3-r" aria-label="第3小時紅車前進距離"></td>
+                <td><input class="cell-input" type="number" id="ct-3-c" aria-label="第3小時紅車追近距離"></td>
+                <td><input class="cell-input" type="number" id="ct-3-g" aria-label="第3小時兩車相距距離"></td>
+              </tr>
+              <tr class="row-highlight">
+                <td class="mono-num">5（追上！）</td>
+                <td class="mono-num">375</td>
+                <td class="mono-num">400</td>
+                <td class="mono-num">25</td>
+                <td class="mono-num">0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="feedback-box" id="chase-table-fb" style="margin-top:var(--space-md);"></div>
+      </div>
+
+      <!-- Critical thinking: Can Qiqi catch Nini before finish? -->
+      <div class="ink-block-yellow">
+        <div class="split-asymmetric">
+          <div>
+            <span class="kicker-note">素養應用：在終點前追得上嗎？</span>
+            <h3 class="subhead" style="margin:var(--space-xs) 0 var(--space-sm) 0;">小鐵人自行車 4 公里：奇奇能追上妮妮嗎？</h3>
+            <p style="margin:0 0 var(--space-md) 0;">
+              練習騎車全長 <span class="mono-num">4</span> 公里（<span class="mono-num">4000</span> 公尺）。妮妮速率 <span class="mono-num">320</span> 公尺/分，奇奇速率 <span class="mono-num">400</span> 公尺/分。奇奇讓妮妮先騎 <span class="mono-num">960</span> 公尺才出發，在妮妮抵達終點前追得上嗎？
+            </p>
+            <div class="diagram-stage">
+              <svg class="diagram-svg" viewBox="0 0 600 150" role="img" aria-label="奇奇與妮妮抵達終點時間比較圖">
+                <!-- 4000m track -->
+                <line x1="30" y1="55" x2="550" y2="55" stroke="var(--outline)" stroke-width="3"/>
+                <rect x="30" y="40" width="125" height="30" fill="var(--surface-container)" stroke="var(--outline)" stroke-width="1.5"/>
+                <text x="92" y="60" text-anchor="middle" fill="var(--on-surface)" font-family="Space Mono, Noto Sans TC, monospace" font-size="11" font-weight="700">先騎 960 m</text>
+                <rect x="155" y="40" width="395" height="30" fill="var(--data-1)" class="overprint-mark"/>
+                <text x="352" y="60" text-anchor="middle" fill="var(--on-primary)" font-family="Space Mono, Noto Sans TC, monospace" font-size="12" font-weight="700">剩餘 3040 m（妮妮只需 9.5 分到達）</text>
+                <!-- Finish line -->
+                <line x1="550" y1="22" x2="550" y2="128" stroke="var(--tertiary)" stroke-width="3" stroke-dasharray="4 3"/>
+                <text x="550" y="18" text-anchor="middle" fill="var(--tertiary)" font-family="Noto Sans TC, sans-serif" font-size="12" font-weight="700">終點 4000 m</text>
+                <!-- Qiqi chase span -->
+                <rect x="30" y="92" width="520" height="28" fill="var(--data-2)" class="overprint-mark"/>
+                <text x="290" y="111" text-anchor="middle" fill="var(--on-primary)" font-family="Space Mono, Noto Sans TC, monospace" font-size="12" font-weight="700">奇奇追上需 960 ÷ (400－320) ＝ 12 分鐘（此時早已過終點！）</text>
+              </svg>
+            </div>
+          </div>
+          <div class="recessed-panel">
+            <span class="kicker-note">比較兩個關鍵時間</span>
+            <ol style="padding-left:1.25rem; margin:var(--space-sm) 0; display:flex; flex-direction:column; gap:var(--space-sm); font-size:0.95rem;">
+              <li><strong>奇奇追上需要：</strong><br><span class="mono-num">400 － 320 ＝ 80</span>（公尺/分）<br><span class="mono-num">960 ÷ 80 ＝ 12</span>（分鐘）</li>
+              <li><strong>妮妮到達終點還要：</strong><br><span class="mono-num">4000 － 960 ＝ 3040</span>（公尺）<br><span class="mono-num">3040 ÷ 320 ＝ 9.5</span>（分鐘）</li>
+            </ol>
+            <div style="padding:var(--space-sm); background:var(--surface-container-low); border:var(--ink-border); border-radius:var(--rounded); font-weight:700;">
+              因為 <span class="mono-num">9.5 分鐘 ＜ 12 分鐘</span>，妮妮先到終點，所以奇奇<strong>不能</strong>追上！
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2-3 Practice -->
+      <div class="practice-deck">
+        <article class="quiz-card" id="q-chase-1">
+          <div class="section-meta-row">
+            <span class="stamp">隨堂練習 5</span>
+            <span class="kicker-note">先跑出一段時間</span>
+          </div>
+          <p class="quiz-prompt">
+            豆豆游泳速率 <span class="mono-num">1.2</span> 公尺/秒，妙妙游泳速率 <span class="mono-num">0.7</span> 公尺/秒。妙妙先游 <span class="mono-num">10</span> 秒鐘後豆豆才開始游，幾秒鐘後豆豆可以追上妙妙？
+          </p>
+          <div class="option-list">
+            <button type="button" class="option-btn" onclick="answerQuiz('q-chase-1', 0, 2)">A. 10 秒鐘後</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-chase-1', 1, 2)">B. 12 秒鐘後</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-chase-1', 2, 2)">C. 14 秒鐘後</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-chase-1', 3, 2)">D. 16 秒鐘後</button>
+          </div>
+          <div class="feedback-box" id="q-chase-1-fb"></div>
+        </article>
+
+        <article class="quiz-card" id="q-chase-2">
+          <div class="section-meta-row">
+            <span class="stamp">隨堂練習 6</span>
+            <span class="kicker-note">先出發距離</span>
+          </div>
+          <p class="quiz-prompt">
+            芯語跑步速率 <span class="mono-num">4</span> 公尺/秒，哥哥跑步速率 <span class="mono-num">6</span> 公尺/秒，同起點同方向出發。芯語先跑 <span class="mono-num">54</span> 公尺後哥哥才出發，哥哥幾秒鐘後追上芯語？
+          </p>
+          <div class="option-list">
+            <button type="button" class="option-btn" onclick="answerQuiz('q-chase-2', 0, 1)">A. 9 秒鐘後</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-chase-2', 1, 1)">B. 27 秒鐘後</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-chase-2', 2, 1)">C. 18 秒鐘後</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-chase-2', 3, 1)">D. 30 秒鐘後</button>
+          </div>
+          <div class="feedback-box" id="q-chase-2-fb"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 2-4: RIVER CURRENT ==================== -->
+    <section class="unit-section" id="sec-river">
+      <div class="section-header">
+        <div class="section-meta-row">
+          <span class="stamp">2-4 流水問題</span>
+          <span class="kicker-note">核心關鍵：順流＝船速＋水速｜逆流＝船速－水速</span>
+        </div>
+        <h2 class="misregister section-title">順流推一把、逆流擋一下：李白「千里江陵一日還」的秘密</h2>
+        <p class="prose-block">
+          詩人李白〈早發白帝城〉寫道「千里江陵一日還」，就是因為船從地勢高的白帝城「<span class="highlight-yellow">順流而下</span>」，水流幫助船前進！相反地，逆著水流航行時，水流會阻擋船隻，航行速率就會比靜水時更慢。
+        </p>
+      </div>
+
+      <!-- Interactive River Simulator -->
+      <div class="ink-block-blue">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:var(--space-sm); margin-bottom:var(--space-md);">
+          <h3 class="subhead">河流航行比較實驗室：順流、靜水與逆流</h3>
+          <button type="button" class="btn btn-outline" onclick="resetRiverPreset()">豪華號範例（船速 15 / 水速 3 / 距離 72）</button>
+        </div>
+
+        <div class="card-grid-3" style="margin-bottom:var(--space-md);">
+          <div class="field-group">
+            <label class="field-label" for="river-boat-slider">靜水船速：<span class="mono-num" id="river-boat-val">15</span> 公里/時</label>
+            <input class="range-slider" type="range" id="river-boat-slider" min="8" max="24" step="1" value="15" oninput="updateRiverLab()">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="river-water-slider">水流速率：<span class="mono-num" id="river-water-val">3</span> 公里/時</label>
+            <input class="range-slider" type="range" id="river-water-slider" min="0" max="6" step="1" value="3" oninput="updateRiverLab()">
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="river-dist-slider">甲乙兩地距離：<span class="mono-num" id="river-dist-val">72</span> 公里</label>
+            <input class="range-slider" type="range" id="river-dist-slider" min="24" max="120" step="12" value="72" oninput="updateRiverLab()">
+          </div>
+        </div>
+
+        <div class="controls-row" style="margin-bottom:var(--space-md);">
+          <div class="field-group" style="flex:1; min-width:200px;">
+            <label class="field-label" for="river-time-slider">模擬航行時間：<span class="mono-num" id="river-time-val">4</span> 小時</label>
+            <input class="range-slider" type="range" id="river-time-slider" min="0" max="8" step="0.5" value="4" oninput="onRiverTimeSlide(this.value)">
+          </div>
+          <button type="button" class="btn btn-primary" id="btn-river-play" onclick="toggleRiverPlay()">
+            <i data-lucide="play" width="16" height="16"></i>航行動畫
+          </button>
+        </div>
+
+        <div class="diagram-stage" style="margin-bottom:var(--space-lg);">
+          <svg class="diagram-svg" id="river-svg" viewBox="0 0 680 215" role="img" aria-label="順流、靜水與逆流航行距離比較圖"></svg>
+        </div>
+
+        <div class="card-grid-3">
+          <div class="ink-block stat-tile">
+            <span class="kicker-note">順流航行（船速 ＋ 水速）</span>
+            <div class="stat-big" id="river-down-speed">18 公里/時</div>
+            <div style="font-size:0.92rem; color:var(--on-surface-variant);" id="river-down-time">航行 72 km 需 4.0 小時</div>
+          </div>
+          <div class="ink-block stat-tile">
+            <span class="kicker-note">靜水湖面（原船速）</span>
+            <div class="stat-big" id="river-still-speed">15 公里/時</div>
+            <div style="font-size:0.92rem; color:var(--on-surface-variant);" id="river-still-time">航行 72 km 需 4.8 小時</div>
+          </div>
+          <div class="ink-block stat-tile">
+            <span class="kicker-note">逆流航行（船速 － 水速）</span>
+            <div class="stat-big" id="river-up-speed">12 公里/時</div>
+            <div style="font-size:0.92rem; color:var(--tertiary); font-weight:700;" id="river-up-time">返回 72 km 需 6.0 小時</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2-4 Practice -->
+      <div class="practice-deck">
+        <article class="quiz-card" id="q-river-1">
+          <div class="section-meta-row">
+            <span class="stamp">隨堂練習 7</span>
+            <span class="kicker-note">順流與逆流判斷</span>
+          </div>
+          <p class="quiz-prompt">
+            遊艇在靜水時的船速是 <span class="mono-num">11</span> 公里/時，去程的航行速率是 <span class="mono-num">9</span> 公里/時，回程的航行速率是 <span class="mono-num">13</span> 公里/時，遊艇在什麼時候是「順流」航行？
+          </p>
+          <div class="option-list">
+            <button type="button" class="option-btn" onclick="answerQuiz('q-river-1', 0, 1)">A. 去程</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-river-1', 1, 1)">B. 回程</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-river-1', 2, 1)">C. 去程回程都是</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-river-1', 3, 1)">D. 去程回程都不是</button>
+          </div>
+          <div class="feedback-box" id="q-river-1-fb"></div>
+        </article>
+
+        <article class="quiz-card" id="q-river-2">
+          <div class="section-meta-row">
+            <span class="stamp">隨堂練習 8</span>
+            <span class="kicker-note">反求水速與時刻</span>
+          </div>
+          <p class="quiz-prompt">
+            <span class="mono-num">A</span>、<span class="mono-num">B</span> 兩地相距 <span class="mono-num">3</span> 公里，晴空號靜水船速 <span class="mono-num">11</span> 公里/時。從 <span class="mono-num">A</span> 順流到 <span class="mono-num">B</span> 要 <span class="mono-num">0.25</span> 小時；若下午 <span class="mono-num">2</span> 時 <span class="mono-num">30</span> 分從 <span class="mono-num">B</span> 逆流回 <span class="mono-num">A</span>，幾時幾分到達？
+          </p>
+          <div class="option-list">
+            <button type="button" class="option-btn" onclick="answerQuiz('q-river-2', 0, 2)">A. 下午 2 時 45 分</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-river-2', 1, 2)">B. 下午 2 時 46 分</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-river-2', 2, 2)">C. 下午 2 時 48 分</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-river-2', 3, 2)">D. 下午 3 時 00 分</button>
+          </div>
+          <div class="feedback-box" id="q-river-2-fb"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ==================== SECTION 5: FORMULA SUMMARY & QUIZ ==================== -->
+    <section class="unit-section" id="sec-summary">
+      <div class="section-header">
+        <div class="section-meta-row">
+          <span class="stamp">重點總整理與練習百分百</span>
+          <span class="kicker-note">單元核心公式卡與綜合應用挑戰</span>
+        </div>
+        <h2 class="misregister section-title">五大題型公式表與綜合實戰</h2>
+        <p class="prose-block">
+          考前最後一步，對照這張公式表確認自己是否分得清楚何時「相加」、何時「相減」，再完成下方的四道綜合應用題！
+        </p>
+      </div>
+
+      <div class="ink-block">
+        <div class="riso-table-wrap">
+          <table class="riso-table" aria-label="速率的應用單元公式總整理表">
+            <thead>
+              <tr>
+                <th>題型分類</th>
+                <th>核心公式</th>
+                <th>單位時間意義與解題叮嚀</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>基本關係</strong></td>
+                <td class="mono-num">速率 ＝ 距離 ÷ 時間</td>
+                <td>距離 ＝ 速率 × 時間；時間 ＝ 距離 ÷ 速率。注意換算單位一致（時/分/秒）。</td>
+              </tr>
+              <tr class="row-highlight">
+                <td><strong>2-1 平均速率</strong></td>
+                <td class="mono-num">平均速率 ＝ 總距離 ÷ 總時間</td>
+                <td><strong>切勿直接把兩段速率相加除以 2！</strong>往返問題需先個別算出往、返時間再相加。</td>
+              </tr>
+              <tr>
+                <td><strong>2-2 相離／相遇</strong></td>
+                <td class="mono-num">反方向：速率相加<br>同方向：速率相減</td>
+                <td>先求 1 單位時間相距或拉近的距離。環形步道同地反方向＝直線相向而行。</td>
+              </tr>
+              <tr>
+                <td><strong>2-3 追趕問題</strong></td>
+                <td class="mono-num">追趕時間 ＝ 相差距離 ÷ 速率差</td>
+                <td>速率差 ＝ 快者速率 － 慢者速率。若只給先出發時間，先算「先出發速率 × 時間」。</td>
+              </tr>
+              <tr>
+                <td><strong>2-4 流水問題</strong></td>
+                <td class="mono-num">順流 ＝ 船速 ＋ 水速<br>逆流 ＝ 船速 － 水速</td>
+                <td>往返兩地距離相同時，順流時間較短、逆流時間較長。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Comprehensive Challenge Quiz -->
+      <div class="practice-deck">
+        <article class="quiz-card" id="q-final-1">
+          <div class="section-meta-row">
+            <span class="stamp">綜合挑戰 1</span>
+            <span class="kicker-note">時刻計算＋平均速率</span>
+          </div>
+          <p class="quiz-prompt">
+            妮妮全家從大稻埕碼頭騎車到關渡宮（單趟 <span class="mono-num">12</span> 公里），去程 <span class="mono-num">09:00</span> 出發、<span class="mono-num">09:45</span> 抵達；回程 <span class="mono-num">14:27</span> 出發、<span class="mono-num">15:18</span> 抵達。全程騎車的平均速率是多少公里/時？
+          </p>
+          <div class="option-list">
+            <button type="button" class="option-btn" onclick="answerQuiz('q-final-1', 0, 1)">A. 14 公里/時</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-final-1', 1, 1)">B. 15 公里/時</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-final-1', 2, 1)">C. 16 公里/時</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-final-1', 3, 1)">D. 12.5 公里/時</button>
+          </div>
+          <div class="feedback-box" id="q-final-1-fb"></div>
+        </article>
+
+        <article class="quiz-card" id="q-final-2">
+          <div class="section-meta-row">
+            <span class="stamp">綜合挑戰 2</span>
+            <span class="kicker-note">追趕問題（小數速率）</span>
+          </div>
+          <p class="quiz-prompt">
+            甲車速率 <span class="mono-num">0.75</span> 公里/分，乙車速率 <span class="mono-num">0.9</span> 公里/分，兩車從同起點往同方向出發。甲車先出發 <span class="mono-num">2</span> 分鐘後乙車才出發，幾分鐘後乙車能追上甲車？
+          </p>
+          <div class="option-list">
+            <button type="button" class="option-btn" onclick="answerQuiz('q-final-2', 0, 0)">A. 10 分鐘後</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-final-2', 1, 0)">B. 8 分鐘後</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-final-2', 2, 0)">C. 12 分鐘後</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-final-2', 3, 0)">D. 15 分鐘後</button>
+          </div>
+          <div class="feedback-box" id="q-final-2-fb"></div>
+        </article>
+
+        <article class="quiz-card" id="q-final-3">
+          <div class="section-meta-row">
+            <span class="stamp">綜合挑戰 3</span>
+            <span class="kicker-note">遙控汽車相向相遇</span>
+          </div>
+          <p class="quiz-prompt">
+            直線車道上，橘車速率 <span class="mono-num">300</span> 公尺/分，綠車速率 <span class="mono-num">325</span> 公尺/分。若兩車相距 <span class="mono-num">1250</span> 公尺同時相向出發，幾分鐘後會相遇？
+          </p>
+          <div class="option-list">
+            <button type="button" class="option-btn" onclick="answerQuiz('q-final-3', 0, 1)">A. 1.5 分鐘後</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-final-3', 1, 1)">B. 2 分鐘後</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-final-3', 2, 1)">C. 2.5 分鐘後</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-final-3', 3, 1)">D. 50 分鐘後</button>
+          </div>
+          <div class="feedback-box" id="q-final-3-fb"></div>
+        </article>
+
+        <article class="quiz-card" id="q-final-4">
+          <div class="section-meta-row">
+            <span class="stamp">綜合挑戰 4</span>
+            <span class="kicker-note">快艇順流求時間</span>
+          </div>
+          <p class="quiz-prompt">
+            河流水流速率 <span class="mono-num">2</span> 公里/時，閃電號快艇靜水船速 <span class="mono-num">50</span> 公里/時。甲、乙兩地相距 <span class="mono-num">26</span> 公里，快艇從甲地順流航行到乙地要花幾小時？
+          </p>
+          <div class="option-list">
+            <button type="button" class="option-btn" onclick="answerQuiz('q-final-4', 0, 2)">A. 0.4 小時</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-final-4', 1, 2)">B. 0.52 小時</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-final-4', 2, 2)">C. 0.5 小時</button>
+            <button type="button" class="option-btn" onclick="answerQuiz('q-final-4', 3, 2)">D. 2 小時</button>
+          </div>
+          <div class="feedback-box" id="q-final-4-fb"></div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div>內容取材自國小六年級下學期數學「第二單元：速率的應用」教材與習作例題。</div>
+      <div class="mono-num">2-1 平均速率 · 2-2 相離相遇 · 2-3 追趕 · 2-4 流水</div>
+    </footer>
+
+  </main>
+
+  <api-shim></api-shim>
+  <script>
+    /* ==================== DATA & STATE ==================== */
+    var QUIZ_EXPLANATIONS = {
+      'q-avg-1': `總距離 ＝ 12 ＋ 8 ＝ 20（公里）；總時間 ＝ 0.25 ＋ 0.15 ＝ 0.4（小時）；平均速率 ＝ 20 ÷ 0.4 ＝ 50（公里/時）。`,
+      'q-avg-2': `先求往返時間：去程 9 ÷ 45 ＝ 0.2（小時），回程 9 ÷ 36 ＝ 0.25（小時）。總距離 9 × 2 ＝ 18（公里），總時間 0.2 ＋ 0.25 ＝ 0.45（小時），18 ÷ 0.45 ＝ 40（公里/時）。`,
+      'q-meet-1': `同時同地反方向出發，1 分鐘相距 74 ＋ 71 ＝ 145（公尺）。1015 ÷ 145 ＝ 7（分鐘後）。`,
+      'q-meet-2': `兩人同時相向出發，1 分鐘共走 75 ＋ 60 ＝ 135（公尺）。6 分鐘共走 135 × 6 ＝ 810（公尺），此時相距 2025 － 810 ＝ 1215（公尺）。`,
+      'q-chase-1': `妙妙先游 10 秒相距 0.7 × 10 ＝ 7（公尺）。每秒追近 1.2 － 0.7 ＝ 0.5（公尺），7 ÷ 0.5 ＝ 14（秒鐘後）。`,
+      'q-chase-2': `每秒速率差 6 － 4 ＝ 2（公尺），54 ÷ 2 ＝ 27（秒鐘後）。`,
+      'q-river-1': `靜水船速是 11 公里/時，順流時速率會比靜水快（船速＋水速），因此 13 公里/時的「回程」才是順流航行。`,
+      'q-river-2': `順流速率 ＝ 3 ÷ 0.25 ＝ 12（公里/時），水速 ＝ 12 － 11 ＝ 1（公里/時）。逆流速率 ＝ 11 － 1 ＝ 10（公里/時），回程時間 ＝ 3 ÷ 10 ＝ 0.3 小時 ＝ 18 分鐘。2 時 30 分 ＋ 18 分 ＝ 下午 2 時 48 分。`,
+      'q-final-1': `總距離 ＝ 12 × 2 ＝ 24（公里）。去程花 45 分，回程 15 時 18 分 － 14 時 27 分 ＝ 51 分，總時間 ＝ 45 ＋ 51 ＝ 96 分鐘 ＝ 1.6 小時。24 ÷ 1.6 ＝ 15（公里/時）。`,
+      'q-final-2': `甲車先出發 2 分鐘走了 0.75 × 2 ＝ 1.5（公里）。每分鐘追近 0.9 － 0.75 ＝ 0.15（公里），1.5 ÷ 0.15 ＝ 10（分鐘後）。`,
+      'q-final-3': `兩車相向而行，每分鐘拉近 300 ＋ 325 ＝ 625（公尺）。1250 ÷ 625 ＝ 2（分鐘後）。`,
+      'q-final-4': `順流速率 ＝ 50 ＋ 2 ＝ 52（公里/時）。26 ÷ 52 ＝ 0.5（小時）。`
+    };
+
+    var appState = {
+      warmup: {},
+      quizzes: {},
+      chaseTableSolved: false
+    };
+
+    var meetMode = 'opposite';
+    var meetTime = 0;
+    var meetTimerId = null;
+
+    var riverTime = 4;
+    var riverTimerId = null;
+
+    function formatNum(n) {
+      var rounded = Math.round(n * 100) / 100;
+      return String(rounded);
+    }
+
+    /* ==================== STATE PERSISTENCE ==================== */
+    async function saveProgress() {
+      if (window.notebookAppApi && typeof window.notebookAppApi.setAppState === 'function') {
+        try {
+          await window.notebookAppApi.setAppState(appState);
+        } catch (e) {
+          /* Ignore transient storage failure */
+        }
+      }
+      updateProgressUI();
+    }
+
+    function updateProgressUI() {
+      var quizIds = Object.keys(QUIZ_EXPLANATIONS);
+      var correctCount = 0;
+      for (var i = 0; i < quizIds.length; i++) {
+        var qid = quizIds[i];
+        if (appState.quizzes[qid] && appState.quizzes[qid].correct) {
+          correctCount++;
+        }
+      }
+      var total = quizIds.length;
+      var pct = Math.round((correctCount / total) * 100);
+
+      var ratioEl = document.getElementById('progress-ratio');
+      var pctEl = document.getElementById('progress-percent');
+      var fillEl = document.getElementById('progress-fill');
+      var wrapEl = document.getElementById('progress-bar-wrap');
+      var msgEl = document.getElementById('progress-status-msg');
+
+      if (ratioEl) ratioEl.textContent = `${correctCount} / ${total} 題完成`;
+      if (pctEl) pctEl.textContent = `${pct}%`;
+      if (fillEl) fillEl.style.width = `${pct}%`;
+      if (wrapEl) wrapEl.setAttribute('aria-valuenow', String(pct));
+
+      if (msgEl) {
+        if (correctCount === 0) {
+          msgEl.textContent = `尚未答對隨堂或綜合題，試著操作各節實驗室並挑戰練習題吧！`;
+        } else if (correctCount < total) {
+          msgEl.textContent = `已完成 ${correctCount} 題，繼續完成剩餘 ${total - correctCount} 題就能解鎖全部觀念！`;
+        } else {
+          msgEl.textContent = `太棒了！全部 ${total} 道隨堂與綜合練習題皆已正確完成。`;
+        }
+      }
+    }
+
+    function handleResetProgress(btn) {
+      if (!btn) return;
+      if (btn.dataset.armed !== 'true') {
+        btn.dataset.armed = 'true';
+        btn.textContent = `再按一次確認清除`;
+        setTimeout(function () {
+          if (btn.dataset.armed === 'true') {
+            btn.dataset.armed = 'false';
+            btn.innerHTML = `<i data-lucide="rotate-ccw" width="16" height="16"></i>重設所有紀錄`;
+            if (window.lucide) window.lucide.createIcons();
+          }
+        }, 3500);
+        return;
+      }
+
+      btn.dataset.armed = 'false';
+      btn.innerHTML = `<i data-lucide="rotate-ccw" width="16" height="16"></i>重設所有紀錄`;
+      if (window.lucide) window.lucide.createIcons();
+
+      appState = { warmup: {}, quizzes: {}, chaseTableSolved: false };
+
+      /* Reset UI for warmup */
+      var wIds = ['w1', 'w2', 'w3'];
+      for (var i = 0; i < wIds.length; i++) {
+        var inp = document.getElementById(`${wIds[i]}-input`);
+        var fb = document.getElementById(`${wIds[i]}-fb`);
+        if (inp) inp.value = '';
+        if (fb) {
+          fb.className = 'feedback-box';
+          fb.textContent = '';
+        }
+      }
+
+      /* Reset UI for quizzes */
+      var qIds = Object.keys(QUIZ_EXPLANATIONS);
+      for (var j = 0; j < qIds.length; j++) {
+        var card = document.getElementById(qIds[j]);
+        if (card) {
+          card.classList.remove('answered-correct');
+          var btns = card.querySelectorAll('.option-btn');
+          for (var b = 0; b < btns.length; b++) {
+            btns[b].classList.remove('selected-correct', 'selected-wrong');
+          }
+        }
+        var qfb = document.getElementById(`${qIds[j]}-fb`);
+        if (qfb) {
+          qfb.className = 'feedback-box';
+          qfb.innerHTML = '';
+        }
+      }
+
+      /* Reset chase table */
+      var ctIds = ['ct-2-b', 'ct-2-r', 'ct-2-c', 'ct-2-g', 'ct-3-b', 'ct-3-r', 'ct-3-c', 'ct-3-g'];
+      for (var k = 0; k < ctIds.length; k++) {
+        var cell = document.getElementById(ctIds[k]);
+        if (cell) {
+          cell.value = '';
+          cell.classList.remove('is-correct', 'is-wrong');
+        }
+      }
+      var cfb = document.getElementById('chase-table-fb');
+      if (cfb) {
+        cfb.className = 'feedback-box';
+        cfb.textContent = '';
+      }
+
+      saveProgress();
+    }
+
+    /* ==================== WARMUP CHECKS ==================== */
+    function checkWarmup(id, expected, explain) {
+      var inp = document.getElementById(`${id}-input`);
+      var fb = document.getElementById(`${id}-fb`);
+      if (!inp || !fb) return;
+
+      var val = parseFloat(inp.value);
+      if (isNaN(val)) {
+        fb.className = 'feedback-box visible err';
+        fb.textContent = `請先輸入數字再檢查答案。`;
+        return;
+      }
+
+      var ok = Math.abs(val - expected) < 0.01;
+      if (ok) {
+        fb.className = 'feedback-box visible ok';
+        fb.innerHTML = `<strong>答對了！</strong><div class="step-math">${explain}</div>`;
+      } else {
+        fb.className = 'feedback-box visible err';
+        fb.innerHTML = `<strong>再算算看：</strong>速率 ＝ 距離 ÷ 時間。<div class="step-math">正確算式：${explain}</div>`;
+      }
+      appState.warmup[id] = { value: val, correct: ok };
+      saveProgress();
+    }
+
+    /* ==================== QUIZZES ==================== */
+    function answerQuiz(qid, selectedIdx, correctIdx) {
+      var card = document.getElementById(qid);
+      var fb = document.getElementById(`${qid}-fb`);
+      if (!card || !fb) return;
+
+      var btns = card.querySelectorAll('.option-btn');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.remove('selected-correct', 'selected-wrong');
+        if (i === selectedIdx) {
+          btns[i].classList.add(selectedIdx === correctIdx ? 'selected-correct' : 'selected-wrong');
+        }
+      }
+
+      var isCorrect = selectedIdx === correctIdx;
+      var explain = QUIZ_EXPLANATIONS[qid] || '';
+      if (isCorrect) {
+        card.classList.add('answered-correct');
+        fb.className = 'feedback-box visible ok';
+        fb.innerHTML = `<strong>答對了！觀念非常清楚。</strong><div class="step-math">${explain}</div>`;
+      } else {
+        card.classList.remove('answered-correct');
+        fb.className = 'feedback-box visible err';
+        fb.innerHTML = `<strong>答案還不對，試著重新檢查算式：</strong><div class="step-math">提示與解析：${explain}</div>`;
+      }
+
+      appState.quizzes[qid] = { selectedIdx: selectedIdx, correctIdx: correctIdx, correct: isCorrect };
+      saveProgress();
+    }
+
+    function restoreQuizUI() {
+      var qIds = Object.keys(appState.quizzes || {});
+      for (var i = 0; i < qIds.length; i++) {
+        var qid = qIds[i];
+        var record = appState.quizzes[qid];
+        if (record && typeof record.selectedIdx === 'number' && typeof record.correctIdx === 'number') {
+          var card = document.getElementById(qid);
+          var fb = document.getElementById(`${qid}-fb`);
+          if (!card || !fb) continue;
+          var btns = card.querySelectorAll('.option-btn');
+          for (var b = 0; b < btns.length; b++) {
+            btns[b].classList.remove('selected-correct', 'selected-wrong');
+            if (b === record.selectedIdx) {
+              btns[b].classList.add(record.correct ? 'selected-correct' : 'selected-wrong');
+            }
+          }
+          var explain = QUIZ_EXPLANATIONS[qid] || '';
+          if (record.correct) {
+            card.classList.add('answered-correct');
+            fb.className = 'feedback-box visible ok';
+            fb.innerHTML = `<strong>答對了！觀念非常清楚。</strong><div class="step-math">${explain}</div>`;
+          } else {
+            fb.className = 'feedback-box visible err';
+            fb.innerHTML = `<strong>答案還不對，試著重新檢查算式：</strong><div class="step-math">提示與解析：${explain}</div>`;
+          }
+        }
+      }
+
+      var wIds = Object.keys(appState.warmup || {});
+      for (var j = 0; j < wIds.length; j++) {
+        var wid = wIds[j];
+        var wrec = appState.warmup[wid];
+        var inp = document.getElementById(`${wid}-input`);
+        var wfb = document.getElementById(`${wid}-fb`);
+        if (inp && wrec) {
+          inp.value = wrec.value;
+        }
+        if (wfb && wrec && wrec.correct) {
+          wfb.className = 'feedback-box visible ok';
+          wfb.innerHTML = `<strong>答對了！</strong>`;
+        }
+      }
+
+      if (appState.chaseTableSolved) {
+        fillChaseTableAnswer(true);
+      }
+    }
+
+    /* ==================== 2-1 MOUNTAIN LAB ==================== */
+    function updateMountainLab() {
+      var dSlider = document.getElementById('mtn-dist-slider');
+      var uSlider = document.getElementById('mtn-up-slider');
+      var kSlider = document.getElementById('mtn-down-slider');
+      if (!dSlider || !uSlider || !kSlider) return;
+
+      var d = parseFloat(dSlider.value);
+      var vUp = parseFloat(uSlider.value);
+      var vDown = parseFloat(kSlider.value);
+
+      var tUp = d / vUp;
+      var tDown = d / vDown;
+      var totalDist = d * 2;
+      var totalTime = tUp + tDown;
+      var trueAvg = totalDist / totalTime;
+      var wrongAvg = (vUp + vDown) / 2;
+      var fakeDist = wrongAvg * totalTime;
+
+      var setTxt = function (id, txt) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = txt;
+      };
+
+      setTxt('mtn-dist-val', formatNum(d));
+      setTxt('mtn-up-val', formatNum(vUp));
+      setTxt('mtn-down-val', formatNum(vDown));
+      setTxt('mtn-text-dist', formatNum(d));
+      setTxt('mtn-text-up', formatNum(vUp));
+      setTxt('mtn-text-down', formatNum(vDown));
+
+      setTxt('svg-mtn-up-lbl', `上山 ${formatNum(vUp)} km/h`);
+      setTxt('svg-mtn-down-lbl', `下山 ${formatNum(vDown)} km/h`);
+      setTxt('svg-mtn-dist-lbl', `單趟 ${formatNum(d)} km ｜ 來回總距 ${formatNum(totalDist)} km`);
+      setTxt('svg-bar-up-txt', `上山 ${formatNum(tUp)} 小時`);
+      setTxt('svg-bar-down-txt', `下山 ${formatNum(tDown)} 小時`);
+      setTxt('svg-mtn-time-total', `總時間 ＝ ${formatNum(totalTime)} 小時`);
+
+      var maxBarW = 220;
+      var maxT = Math.max(tUp, tDown, 1);
+      var wUp = Math.max(68, Math.round((tUp / maxT) * maxBarW));
+      var wDown = Math.max(68, Math.round((tDown / maxT) * maxBarW));
+      var barUp = document.getElementById('svg-bar-up');
+      var barDown = document.getElementById('svg-bar-down');
+      if (barUp) barUp.setAttribute('width', String(wUp));
+      if (barDown) barDown.setAttribute('width', String(wDown));
+
+      setTxt('mtn-wrong-eq', `(${formatNum(vUp)} ＋ ${formatNum(vDown)}) ÷ 2 ＝ ${formatNum(wrongAvg)} 公里/時`);
+      setTxt('mtn-wrong-proof', `反證驗算：如果平均速率真的是 ${formatNum(wrongAvg)} 公里/時，走 ${formatNum(totalTime)} 小時總距離會變成 ${formatNum(wrongAvg)} × ${formatNum(totalTime)} ＝ ${formatNum(fakeDist)} 公里，與實際來回 ${formatNum(totalDist)} 公里不符！`);
+
+      setTxt('mtn-right-eq', `${formatNum(totalDist)} ÷ (${formatNum(tUp)} ＋ ${formatNum(tDown)}) ＝ ${formatNum(trueAvg)} 公里/時`);
+      setTxt('mtn-right-steps', `上山時間 ${formatNum(d)}÷${formatNum(vUp)}＝${formatNum(tUp)} 時，下山時間 ${formatNum(d)}÷${formatNum(vDown)}＝${formatNum(tDown)} 時；總距離 ${formatNum(totalDist)} 公里，總時間 ${formatNum(totalTime)} 小時，真正平均速率是 ${formatNum(trueAvg)} 公里/時。`);
+    }
+
+    function resetMountainPreset() {
+      var dSlider = document.getElementById('mtn-dist-slider');
+      var uSlider = document.getElementById('mtn-up-slider');
+      var kSlider = document.getElementById('mtn-down-slider');
+      if (dSlider) dSlider.value = '6';
+      if (uSlider) uSlider.value = '2';
+      if (kSlider) kSlider.value = '3';
+      updateMountainLab();
+    }
+
+    /* ==================== 2-2 SEPARATION & MEETING LAB ==================== */
+    var MEET_SCENARIOS = {
+      opposite: {
+        desc: `<strong>課本範例 1（同地反方向）：</strong>詠安速率 <span class="mono-num">75</span> 公尺/分，宇翔速率 <span class="mono-num">65</span> 公尺/分，同時同地反方向出發，<span class="mono-num">5</span> 分鐘後相距幾公尺？`,
+        maxT: 8,
+        defaultT: 5,
+        nameA: `詠安`,
+        nameB: `宇翔`,
+        vA: 75,
+        vB: 65,
+        unitFormula: `75 ＋ 65 ＝ 140 m`,
+        unitNote: `背對背反方向，每分鐘相距增加 140 公尺`,
+        goalNote: `目標：5 分鐘後相距 700 公尺`
+      },
+      same: {
+        desc: `<strong>課本範例 2（同地同方向）：</strong>詠安速率 <span class="mono-num">75</span> 公尺/分，宇翔速率 <span class="mono-num">65</span> 公尺/分，同時同地同方向出發，<span class="mono-num">8</span> 分鐘後相距幾公尺？`,
+        maxT: 10,
+        defaultT: 8,
+        nameA: `詠安`,
+        nameB: `宇翔`,
+        vA: 75,
+        vB: 65,
+        unitFormula: `75 － 65 ＝ 10 m`,
+        unitNote: `同方向前進，每分鐘差距增加 10 公尺`,
+        goalNote: `目標：8 分鐘後相距 80 公尺`
+      },
+      toward: {
+        desc: `<strong>課本範例 3（兩地相向相遇）：</strong>彥廷與芯語相距 <span class="mono-num">1650</span> 公尺，彥廷 <span class="mono-num">70</span> 公尺/分，芯語 <span class="mono-num">80</span> 公尺/分，同時相向出發，幾分鐘後相遇？`,
+        maxT: 11,
+        defaultT: 11,
+        nameA: `彥廷`,
+        nameB: `芯語`,
+        vA: 70,
+        vB: 80,
+        totalDist: 1650,
+        unitFormula: `70 ＋ 80 ＝ 150 m`,
+        unitNote: `面對面相向而行，每分鐘距離拉近 150 公尺`,
+        goalNote: `目標：1650 ÷ 150 ＝ 11 分鐘後相遇`
+      },
+      circle: {
+        desc: `<strong>課本範例 4（環形步道相遇）：</strong>環形步道一圈 <span class="mono-num">2400</span> 公尺，豆豆 <span class="mono-num">88</span> 公尺/分，妙妙 <span class="mono-num">72</span> 公尺/分，於入口同時反方向出發，幾分鐘後相遇？`,
+        maxT: 15,
+        defaultT: 15,
+        nameA: `豆豆`,
+        nameB: `妙妙`,
+        vA: 88,
+        vB: 72,
+        totalDist: 2400,
+        unitFormula: `88 ＋ 72 ＝ 160 m`,
+        unitNote: `沿圓周反方向，每分鐘共完成 160 公尺`,
+        goalNote: `目標：2400 ÷ 160 ＝ 15 分鐘後相遇`
+      }
+    };
+
+    function setMeetMode(mode) {
+      stopMeetPlay();
+      meetMode = mode;
+      var sc = MEET_SCENARIOS[mode];
+      if (!sc) return;
+
+      var modes = ['opposite', 'same', 'toward', 'circle'];
+      for (var i = 0; i < modes.length; i++) {
+        var b = document.getElementById(`mode-btn-${modes[i]}`);
+        if (b) {
+          b.className = modes[i] === mode ? 'btn btn-active' : 'btn btn-outline';
+        }
+      }
+
+      var slider = document.getElementById('meet-time-slider');
+      if (slider) {
+        slider.max = String(sc.maxT);
+        meetTime = sc.defaultT;
+        slider.value = String(meetTime);
+      }
+
+      var descEl = document.getElementById('meet-scenario-desc');
+      if (descEl) descEl.innerHTML = sc.desc;
+
+      renderMeetLab();
+    }
+
+    function onMeetTimeSlide(val) {
+      stopMeetPlay();
+      meetTime = parseFloat(val);
+      renderMeetLab();
+    }
+
+    function resetMeetSim() {
+      stopMeetPlay();
+      meetTime = 0;
+      var slider = document.getElementById('meet-time-slider');
+      if (slider) slider.value = '0';
+      renderMeetLab();
+    }
+
+    function stopMeetPlay() {
+      if (meetTimerId !== null) {
+        clearInterval(meetTimerId);
+        meetTimerId = null;
+      }
+      var btn = document.getElementById('btn-meet-play');
+      if (btn) {
+        btn.innerHTML = `<i data-lucide="play" width="16" height="16"></i>播放動態`;
+        if (window.lucide) window.lucide.createIcons();
+      }
+    }
+
+    function toggleMeetPlay() {
+      if (meetTimerId !== null) {
+        stopMeetPlay();
+        return;
+      }
+      var sc = MEET_SCENARIOS[meetMode];
+      if (!sc) return;
+      if (meetTime >= sc.maxT) {
+        meetTime = 0;
+      }
+      var btn = document.getElementById('btn-meet-play');
+      if (btn) {
+        btn.innerHTML = `<i data-lucide="pause" width="16" height="16"></i>暫停`;
+        if (window.lucide) window.lucide.createIcons();
+      }
+      meetTimerId = setInterval(function () {
+        meetTime = Math.min(sc.maxT, Math.round((meetTime + 0.5) * 10) / 10);
+        var slider = document.getElementById('meet-time-slider');
+        if (slider) slider.value = String(meetTime);
+        renderMeetLab();
+        if (meetTime >= sc.maxT) {
+          stopMeetPlay();
+        }
+      }, 220);
+    }
+
+    function renderMeetLab() {
+      var sc = MEET_SCENARIOS[meetMode];
+      var svg = document.getElementById('meet-svg');
+      if (!sc || !svg) return;
+
+      var t = meetTime;
+      var dA = Math.round(sc.vA * t);
+      var dB = Math.round(sc.vB * t);
+      var gap = 0;
+      if (meetMode === 'opposite') gap = dA + dB;
+      else if (meetMode === 'same') gap = Math.abs(dA - dB);
+      else gap = Math.max(0, sc.totalDist - (dA + dB));
+
+      var setTxt = function (id, txt) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = txt;
+      };
+
+      setTxt('meet-time-val', formatNum(t));
+      setTxt('meet-unit-delta', sc.unitFormula);
+      setTxt('meet-unit-note', sc.unitNote);
+      setTxt('meet-each-dist', `${dA} m / ${dB} m`);
+      setTxt('meet-each-names', `${sc.nameA} ｜ ${sc.nameB}`);
+      setTxt('meet-current-gap', gap === 0 && (meetMode === 'toward' || meetMode === 'circle') && t > 0 ? `0 公尺（相遇了！）` : `${gap} 公尺`);
+      setTxt('meet-answer-note', sc.goalNote);
+
+      if (meetMode === 'opposite') {
+        var scale = 280 / (sc.vA * sc.maxT);
+        var xA = 340 - dA * scale;
+        var xB = 340 + dB * scale;
+        svg.innerHTML = `
+          <line x1="40" y1="120" x2="640" y2="120" stroke="var(--outline)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="340" y1="90" x2="340" y2="145" stroke="var(--outline)" stroke-width="2" stroke-dasharray="4 3"/>
+          <text x="340" y="164" text-anchor="middle" fill="var(--on-surface)" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="700">共同起點</text>
+          <line x1="${xA}" y1="120" x2="340" y2="120" stroke="var(--data-1)" stroke-width="8" class="overprint-mark"/>
+          <line x1="340" y1="120" x2="${xB}" y2="120" stroke="var(--data-2)" stroke-width="8" class="overprint-mark"/>
+          <circle cx="${xA}" cy="120" r="12" fill="var(--data-1)" stroke="var(--outline)" stroke-width="2.5"/>
+          <circle cx="${xB}" cy="120" r="12" fill="var(--data-2)" stroke="var(--outline)" stroke-width="2.5"/>
+          <text x="${xA}" y="94" text-anchor="middle" fill="var(--primary)" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="700">${sc.nameA} ${dA}m</text>
+          <text x="${xB}" y="94" text-anchor="middle" fill="var(--tertiary)" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="700">${sc.nameB} ${dB}m</text>
+          <line x1="${xA}" y1="45" x2="${xB}" y2="45" stroke="var(--outline)" stroke-width="2"/>
+          <rect x="255" y="30" width="170" height="28" rx="4" fill="var(--surface-container-high)" stroke="var(--outline)" stroke-width="1.5"/>
+          <text x="340" y="49" text-anchor="middle" fill="var(--on-surface)" font-family="Space Mono, Noto Sans TC, monospace" font-size="13" font-weight="700">相距 ${gap} 公尺</text>
+        `;
+      } else if (meetMode === 'same') {
+        var scaleSame = 540 / (sc.vA * sc.maxT);
+        var xASame = 60 + dA * scaleSame;
+        var xBSame = 60 + dB * scaleSame;
+        svg.innerHTML = `
+          <line x1="60" y1="130" x2="630" y2="130" stroke="var(--outline)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="60" y1="70" x2="60" y2="150" stroke="var(--outline)" stroke-width="2" stroke-dasharray="4 3"/>
+          <text x="60" y="170" text-anchor="middle" fill="var(--on-surface)" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="700">共同起點</text>
+          <line x1="60" y1="95" x2="${xASame}" y2="95" stroke="var(--data-1)" stroke-width="7"/>
+          <line x1="60" y1="130" x2="${xBSame}" y2="130" stroke="var(--data-2)" stroke-width="7"/>
+          <circle cx="${xASame}" cy="95" r="11" fill="var(--data-1)" stroke="var(--outline)" stroke-width="2.5"/>
+          <circle cx="${xBSame}" cy="130" r="11" fill="var(--data-2)" stroke="var(--outline)" stroke-width="2.5"/>
+          <text x="${Math.min(xASame, 590)}" y="74" text-anchor="middle" fill="var(--primary)" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="700">${sc.nameA} ${dA}m</text>
+          <text x="${Math.min(xBSame, 590)}" y="160" text-anchor="middle" fill="var(--tertiary)" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="700">${sc.nameB} ${dB}m</text>
+          <rect x="230" y="20" width="220" height="30" rx="4" fill="var(--surface-container-high)" stroke="var(--outline)" stroke-width="1.5"/>
+          <text x="340" y="40" text-anchor="middle" fill="var(--on-surface)" font-family="Space Mono, Noto Sans TC, monospace" font-size="13" font-weight="700">相距 75t－65t ＝ ${gap} m</text>
+        `;
+      } else if (meetMode === 'toward') {
+        var trackW = 560;
+        var posA = 60 + (dA / sc.totalDist) * trackW;
+        var posB = 620 - (dB / sc.totalDist) * trackW;
+        svg.innerHTML = `
+          <line x1="60" y1="120" x2="620" y2="120" stroke="var(--outline)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="60" y1="120" x2="${posA}" y2="120" stroke="var(--data-1)" stroke-width="8"/>
+          <line x1="${posB}" y1="120" x2="620" y2="120" stroke="var(--data-2)" stroke-width="8"/>
+          <circle cx="${posA}" cy="120" r="12" fill="var(--data-1)" stroke="var(--outline)" stroke-width="2.5"/>
+          <circle cx="${posB}" cy="120" r="12" fill="var(--data-2)" stroke="var(--outline)" stroke-width="2.5"/>
+          <text x="60" y="152" text-anchor="middle" fill="var(--on-surface)" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="700">起點 A</text>
+          <text x="620" y="152" text-anchor="middle" fill="var(--on-surface)" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="700">起點 B</text>
+          <text x="${Math.max(70, posA)}" y="92" text-anchor="middle" fill="var(--primary)" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="700">${sc.nameA} ${dA}m</text>
+          <text x="${Math.min(610, posB)}" y="92" text-anchor="middle" fill="var(--tertiary)" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="700">${sc.nameB} ${dB}m</text>
+          <rect x="235" y="25" width="210" height="30" rx="4" fill="var(--surface-container-high)" stroke="var(--outline)" stroke-width="1.5"/>
+          <text x="340" y="45" text-anchor="middle" fill="var(--on-surface)" font-family="Space Mono, Noto Sans TC, monospace" font-size="13" font-weight="700">${gap === 0 ? '兩人相遇！(11 分)' : '還相距 ' + gap + ' 公尺'}</text>
+        `;
+      } else {
+        /* Circular track */
+        var cx = 230;
+        var cy = 112;
+        var r = 74;
+        var fracA = dA / sc.totalDist;
+        var fracB = dB / sc.totalDist;
+        var angA = -Math.PI / 2 - fracA * 2 * Math.PI;
+        var angB = -Math.PI / 2 + fracB * 2 * Math.PI;
+        var ax = cx + r * Math.cos(angA);
+        var ay = cy + r * Math.sin(angA);
+        var bx = cx + r * Math.cos(angB);
+        var by = cy + r * Math.sin(angB);
+        var circ = 2 * Math.PI * r;
+        var dashA = Math.min(circ, fracA * circ);
+        var dashB = Math.min(circ, fracB * circ);
+
+        svg.innerHTML = `
+          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--outline-variant)" stroke-width="12"/>
+          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--outline)" stroke-width="2"/>
+          <!-- Entry point at top -->
+          <circle cx="${cx}" cy="${cy - r}" r="6" fill="var(--primary-container)" stroke="var(--outline)" stroke-width="2"/>
+          <text x="${cx}" y="${cy - r - 14}" text-anchor="middle" fill="var(--on-surface)" font-family="Noto Sans TC, sans-serif" font-size="12" font-weight="700">步道入口（一圈 2400 m）</text>
+          <!-- Arc B clockwise -->
+          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--data-2)" stroke-width="10" stroke-dasharray="${dashB} ${circ}" transform="rotate(-90 ${cx} ${cy})" class="overprint-mark"/>
+          <!-- Arc A counter-clockwise via flip -->
+          <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--data-1)" stroke-width="10" stroke-dasharray="${dashA} ${circ}" transform="translate(${2 * cx}, 0) scale(-1, 1) rotate(-90 ${cx} ${cy})" class="overprint-mark"/>
+          <circle cx="${ax}" cy="${ay}" r="10" fill="var(--data-1)" stroke="var(--outline)" stroke-width="2.5"/>
+          <circle cx="${bx}" cy="${by}" r="10" fill="var(--data-2)" stroke="var(--outline)" stroke-width="2.5"/>
+          <text x="410" y="70" fill="var(--primary)" font-family="Noto Sans TC, sans-serif" font-size="14" font-weight="700">${sc.nameA}（逆時針）：已走 ${dA} m</text>
+          <text x="410" y="102" fill="var(--tertiary)" font-family="Noto Sans TC, sans-serif" font-size="14" font-weight="700">${sc.nameB}（順時針）：已走 ${dB} m</text>
+          <rect x="410" y="122" width="235" height="44" rx="4" fill="var(--surface-container-high)" stroke="var(--outline)" stroke-width="1.5"/>
+          <text x="527" y="149" text-anchor="middle" fill="var(--on-surface)" font-family="Space Mono, Noto Sans TC, monospace" font-size="13" font-weight="700">${gap === 0 ? '兩人於第 15 分鐘相遇！' : '兩人距離合計還差 ' + gap + ' m'}</text>
+        `;
+      }
+    }
+
+    /* ==================== 2-3 CHASE LAB ==================== */
+    function updateChaseVisual(hrVal) {
+      var hr = parseInt(hrVal, 10) || 0;
+      var lbl = document.getElementById('chase-hour-val');
+      var badge = document.getElementById('chase-gap-badge');
+      var svg = document.getElementById('chase-svg');
+      if (lbl) lbl.textContent = String(hr);
+
+      var redDist = hr * 80;
+      var bluePos = 25 + hr * 75;
+      var gap = Math.max(0, bluePos - redDist);
+      if (badge) {
+        badge.textContent = gap === 0 ? `第 5 小時：紅車追上藍車！（相距 0 公里）` : `兩車相距：${gap} 公里`;
+      }
+
+      if (!svg) return;
+      var scale = 540 / 400;
+      var xRed = 60 + redDist * scale;
+      var xBlue = 60 + bluePos * scale;
+      svg.innerHTML = `
+        <line x1="60" y1="95" x2="620" y2="95" stroke="var(--outline)" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="60" cy="95" r="5" fill="var(--outline)"/>
+        <text x="60" y="122" text-anchor="middle" fill="var(--on-surface-variant)" font-family="Space Mono, monospace" font-size="12" font-weight="700">0 km</text>
+        <text x="600" y="122" text-anchor="middle" fill="var(--on-surface-variant)" font-family="Space Mono, monospace" font-size="12" font-weight="700">400 km</text>
+        <!-- Gap indicator -->
+        <line x1="${xRed}" y1="45" x2="${xBlue}" y2="45" stroke="var(--tertiary)" stroke-width="3"/>
+        <rect x="260" y="12" width="160" height="24" rx="4" fill="var(--surface-container-high)" stroke="var(--outline)" stroke-width="1.5"/>
+        <text x="340" y="29" text-anchor="middle" fill="var(--on-surface)" font-family="Space Mono, Noto Sans TC, monospace" font-size="12" font-weight="700">${gap === 0 ? '追上！距離差 0 km' : '相距 ' + gap + ' 公里'}</text>
+        <!-- Red Car (chaser) -->
+        <rect x="${xRed - 18}" y="58" width="36" height="22" rx="4" fill="var(--data-2)" stroke="var(--outline)" stroke-width="2"/>
+        <text x="${xRed}" y="74" text-anchor="middle" fill="var(--on-primary)" font-family="Noto Sans TC, sans-serif" font-size="11" font-weight="700">紅</text>
+        <text x="${Math.max(85, xRed)}" y="142" text-anchor="middle" fill="var(--tertiary)" font-family="Space Mono, Noto Sans TC, monospace" font-size="12" font-weight="700">紅車 ${redDist} km</text>
+        <!-- Blue Car (leader) -->
+        <rect x="${xBlue - 18}" y="84" width="36" height="22" rx="4" fill="var(--data-1)" stroke="var(--outline)" stroke-width="2"/>
+        <text x="${xBlue}" y="100" text-anchor="middle" fill="var(--on-primary)" font-family="Noto Sans TC, sans-serif" font-size="11" font-weight="700">藍</text>
+        <text x="${Math.min(585, xBlue)}" y="52" text-anchor="middle" fill="var(--primary)" font-family="Space Mono, Noto Sans TC, monospace" font-size="12" font-weight="700">藍車位置 ${bluePos} km</text>
+      `;
+    }
+
+    var CHASE_ANSWERS = {
+      'ct-2-b': 150,
+      'ct-2-r': 160,
+      'ct-2-c': 10,
+      'ct-2-g': 15,
+      'ct-3-b': 225,
+      'ct-3-r': 240,
+      'ct-3-c': 15,
+      'ct-3-g': 10
+    };
+
+    function verifyChaseTable() {
+      var ids = Object.keys(CHASE_ANSWERS);
+      var allRight = true;
+      var anyEmpty = false;
+      for (var i = 0; i < ids.length; i++) {
+        var id = ids[i];
+        var el = document.getElementById(id);
+        if (!el) continue;
+        el.classList.remove('is-correct', 'is-wrong');
+        var v = parseFloat(el.value);
+        if (isNaN(v)) {
+          anyEmpty = true;
+          allRight = false;
+          el.classList.add('is-wrong');
+        } else if (v === CHASE_ANSWERS[id]) {
+          el.classList.add('is-correct');
+        } else {
+          allRight = false;
+          el.classList.add('is-wrong');
+        }
+      }
+      var fb = document.getElementById('chase-table-fb');
+      if (fb) {
+        if (allRight) {
+          fb.className = 'feedback-box visible ok';
+          fb.innerHTML = `<strong>全部填寫正確！</strong>觀察表格可以發現：每經過 1 小時紅車追近 <span class="mono-num">80 － 75 ＝ 5</span> 公里，要追回 25 公里剛好需要 <span class="mono-num">25 ÷ 5 ＝ 5</span> 小時！`;
+          appState.chaseTableSolved = true;
+          saveProgress();
+        } else {
+          fb.className = 'feedback-box visible err';
+          fb.textContent = anyEmpty ? `還有空格未填寫，請把第 2、3 小時的格子都填完再檢查。` : `部分數字還不對喔！提示：藍車每小時走 75 公里、紅車每小時走 80 公里，兩車一開始相距 25 公里。`;
+        }
+      }
+    }
+
+    function fillChaseTableAnswer(silent) {
+      var ids = Object.keys(CHASE_ANSWERS);
+      for (var i = 0; i < ids.length; i++) {
+        var el = document.getElementById(ids[i]);
+        if (el) {
+          el.value = String(CHASE_ANSWERS[ids[i]]);
+          el.classList.remove('is-wrong');
+          el.classList.add('is-correct');
+        }
+      }
+      var fb = document.getElementById('chase-table-fb');
+      if (fb) {
+        fb.className = 'feedback-box visible ok';
+        fb.innerHTML = `<strong>示範解答已填入：</strong>每小時紅車追近 5 公里，因此 25 ÷ 5 ＝ 5 小時後追上藍車。`;
+      }
+      if (!silent) {
+        appState.chaseTableSolved = true;
+        saveProgress();
+      }
+    }
+
+    /* ==================== 2-4 RIVER LAB ==================== */
+    function updateRiverLab() {
+      var bS = document.getElementById('river-boat-slider');
+      var wS = document.getElementById('river-water-slider');
+      var dS = document.getElementById('river-dist-slider');
+      if (!bS || !wS || !dS) return;
+
+      var boat = parseFloat(bS.value);
+      var water = parseFloat(wS.value);
+      var dist = parseFloat(dS.value);
+
+      var vDown = boat + water;
+      var vStill = boat;
+      var vUp = Math.max(1, boat - water);
+
+      var tDown = dist / vDown;
+      var tStill = dist / vStill;
+      var tUp = dist / vUp;
+
+      var setTxt = function (id, txt) {
+        var el = document.getElementById(id);
+        if (el) el.textContent = txt;
+      };
+
+      setTxt('river-boat-val', formatNum(boat));
+      setTxt('river-water-val', formatNum(water));
+      setTxt('river-dist-val', formatNum(dist));
+      setTxt('river-time-val', formatNum(riverTime));
+
+      setTxt('river-down-speed', `${formatNum(vDown)} 公里/時`);
+      setTxt('river-down-time', `航行 ${formatNum(dist)} km 需 ${formatNum(tDown)} 小時`);
+      setTxt('river-still-speed', `${formatNum(vStill)} 公里/時`);
+      setTxt('river-still-time', `航行 ${formatNum(dist)} km 需 ${formatNum(tStill)} 小時`);
+      setTxt('river-up-speed', `${formatNum(vUp)} 公里/時`);
+      setTxt('river-up-time', `返回 ${formatNum(dist)} km 需 ${formatNum(tUp)} 小時`);
+
+      var svg = document.getElementById('river-svg');
+      if (!svg) return;
+
+      var maxTrackDist = Math.max(dist, vDown * 6);
+      var laneW = 480;
+      var startX = 110;
+
+      var dDown = Math.min(dist, vDown * riverTime);
+      var dStill = Math.min(dist, vStill * riverTime);
+      var dUp = Math.min(dist, vUp * riverTime);
+
+      var xDown = startX + (dDown / dist) * laneW;
+      var xStill = startX + (dStill / dist) * laneW;
+      var xUp = startX + (dUp / dist) * laneW;
+
+      svg.innerHTML = `
+        <!-- Water direction arrow banner -->
+        <rect x="${startX}" y="12" width="${laneW}" height="24" rx="4" fill="var(--surface-container)" stroke="var(--outline)" stroke-width="1.5"/>
+        <text x="${startX + laneW / 2}" y="29" text-anchor="middle" fill="var(--on-surface)" font-family="Space Mono, Noto Sans TC, monospace" font-size="12" font-weight="700">水流方向 ━━▶（水速 ${water} km/h）</text>
+
+        <!-- Finish vertical line -->
+        <line x1="${startX + laneW}" y1="44" x2="${startX + laneW}" y2="195" stroke="var(--tertiary)" stroke-width="2.5" stroke-dasharray="4 3"/>
+        <text x="${startX + laneW}" y="209" text-anchor="middle" fill="var(--tertiary)" font-family="Space Mono, Noto Sans TC, monospace" font-size="12" font-weight="700">終點 ${dist} km</text>
+
+        <!-- Lane 1: Downstream -->
+        <text x="16" y="72" fill="var(--primary)" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="700">順流（${vDown}）</text>
+        <line x1="${startX}" y1="68" x2="${startX + laneW}" y2="68" stroke="var(--outline-variant)" stroke-width="8" stroke-linecap="round"/>
+        <line x1="${startX}" y1="68" x2="${xDown}" y2="68" stroke="var(--data-1)" stroke-width="8" stroke-linecap="round"/>
+        <polygon points="${xDown - 10},60 ${xDown + 10},68 ${xDown - 10},76" fill="var(--data-1)" stroke="var(--outline)" stroke-width="1.5"/>
+        <text x="${Math.min(startX + laneW + 14, xDown + 16)}" y="73" fill="var(--on-surface)" font-family="Space Mono, monospace" font-size="12" font-weight="700">${formatNum(dDown)}km</text>
+
+        <!-- Lane 2: Still water -->
+        <text x="16" y="122" fill="var(--on-surface)" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="700">靜水（${vStill}）</text>
+        <line x1="${startX}" y1="118" x2="${startX + laneW}" y2="118" stroke="var(--outline-variant)" stroke-width="8" stroke-linecap="round"/>
+        <line x1="${startX}" y1="118" x2="${xStill}" y2="118" stroke="var(--data-3)" stroke-width="8" stroke-linecap="round"/>
+        <polygon points="${xStill - 10},110 ${xStill + 10},118 ${xStill - 10},126" fill="var(--data-3)" stroke="var(--outline)" stroke-width="1.5"/>
+        <text x="${Math.min(startX + laneW + 14, xStill + 16)}" y="123" fill="var(--on-surface)" font-family="Space Mono, monospace" font-size="12" font-weight="700">${formatNum(dStill)}km</text>
+
+        <!-- Lane 3: Upstream -->
+        <text x="16" y="172" fill="var(--tertiary)" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="700">逆流（${vUp}）</text>
+        <line x1="${startX}" y1="168" x2="${startX + laneW}" y2="168" stroke="var(--outline-variant)" stroke-width="8" stroke-linecap="round"/>
+        <line x1="${startX}" y1="168" x2="${xUp}" y2="168" stroke="var(--data-2)" stroke-width="8" stroke-linecap="round"/>
+        <polygon points="${xUp - 10},160 ${xUp + 10},168 ${xUp - 10},176" fill="var(--data-2)" stroke="var(--outline)" stroke-width="1.5"/>
+        <text x="${Math.min(startX + laneW + 14, xUp + 16)}" y="173" fill="var(--tertiary)" font-family="Space Mono, monospace" font-size="12" font-weight="700">${formatNum(dUp)}km</text>
+      `;
+    }
+
+    function onRiverTimeSlide(val) {
+      stopRiverPlay();
+      riverTime = parseFloat(val);
+      updateRiverLab();
+    }
+
+    function stopRiverPlay() {
+      if (riverTimerId !== null) {
+        clearInterval(riverTimerId);
+        riverTimerId = null;
+      }
+      var btn = document.getElementById('btn-river-play');
+      if (btn) {
+        btn.innerHTML = `<i data-lucide="play" width="16" height="16"></i>航行動畫`;
+        if (window.lucide) window.lucide.createIcons();
+      }
+    }
+
+    function toggleRiverPlay() {
+      if (riverTimerId !== null) {
+        stopRiverPlay();
+        return;
+      }
+      if (riverTime >= 8) riverTime = 0;
+      var btn = document.getElementById('btn-river-play');
+      if (btn) {
+        btn.innerHTML = `<i data-lucide="pause" width="16" height="16"></i>暫停`;
+        if (window.lucide) window.lucide.createIcons();
+      }
+      riverTimerId = setInterval(function () {
+        riverTime = Math.min(8, Math.round((riverTime + 0.5) * 10) / 10);
+        var slider = document.getElementById('river-time-slider');
+        if (slider) slider.value = String(riverTime);
+        updateRiverLab();
+        if (riverTime >= 8) stopRiverPlay();
+      }, 240);
+    }
+
+    function resetRiverPreset() {
+      stopRiverPlay();
+      var bS = document.getElementById('river-boat-slider');
+      var wS = document.getElementById('river-water-slider');
+      var dS = document.getElementById('river-dist-slider');
+      var tS = document.getElementById('river-time-slider');
+      if (bS) bS.value = '15';
+      if (wS) wS.value = '3';
+      if (dS) dS.value = '72';
+      riverTime = 4;
+      if (tS) tS.value = '4';
+      updateRiverLab();
+    }
+
+    /* ==================== INIT ==================== */
+    document.addEventListener('DOMContentLoaded', async function () {
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+
+      updateMountainLab();
+      setMeetMode('opposite');
+      updateChaseVisual(0);
+      updateRiverLab();
+
+      if (window.notebookAppApi && typeof window.notebookAppApi.getAppState === 'function') {
+        try {
+          var saved = await window.notebookAppApi.getAppState();
+          if (saved && typeof saved === 'object') {
+            appState.warmup = saved.warmup || {};
+            appState.quizzes = saved.quizzes || {};
+            appState.chaseTableSolved = Boolean(saved.chaseTableSolved);
+            restoreQuizUI();
+          }
+        } catch (e) {
+          /* First run or unavailable */
+        }
+      }
+
+      updateProgressUI();
+
+      if (window.notebookAppApi && typeof window.notebookAppApi.notifyAppReady === 'function') {
+        window.notebookAppApi.notifyAppReady();
+      }
+    });
+  </script>
+</body>
+</html>
